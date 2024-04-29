@@ -1,5 +1,10 @@
 # Musikinformatik
 
+## Projektidee
+
+## Umsetzung /Entwicklungsprozess
+
+## Reflektion
 
 ---
 
