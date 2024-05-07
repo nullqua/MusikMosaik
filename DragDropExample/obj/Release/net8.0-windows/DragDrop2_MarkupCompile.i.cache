@@ -4,15 +4,15 @@
 winexe
 C#
 .cs
-E:\musikinformatik\DragDropExample\obj\Debug\net8.0-windows\
+E:\musikinformatik\DragDropExample\obj\Release\net8.0-windows\
 DragDrop2
 none
 false
-TRACE;DEBUG;NET;NET8_0;NETCOREAPP
+TRACE;RELEASE;NET;NET8_0;NETCOREAPP
 E:\musikinformatik\DragDropExample\App.xaml
 11407045341
 
-61208011725
+6-166004286
 198155382431
 MainWindow.xaml;
 

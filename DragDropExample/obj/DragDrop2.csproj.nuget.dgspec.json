@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "E:\\source\\DragDrop2\\DragDrop2.csproj": {}
+    "E:\\musikinformatik\\DragDropExample\\DragDrop2.csproj": {}
   },
   "projects": {
-    "E:\\source\\DragDrop2\\DragDrop2.csproj": {
+    "E:\\musikinformatik\\DragDropExample\\DragDrop2.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\source\\DragDrop2\\DragDrop2.csproj",
+        "projectUniqueName": "E:\\musikinformatik\\DragDropExample\\DragDrop2.csproj",
         "projectName": "DragDrop2",
-        "projectPath": "E:\\source\\DragDrop2\\DragDrop2.csproj",
+        "projectPath": "E:\\musikinformatik\\DragDropExample\\DragDrop2.csproj",
         "packagesPath": "C:\\Users\\Florian\\.nuget\\packages\\",
-        "outputPath": "E:\\source\\DragDrop2\\obj\\",
+        "outputPath": "E:\\musikinformatik\\DragDropExample\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Florian\\AppData\\Roaming\\NuGet\\NuGet.Config",
