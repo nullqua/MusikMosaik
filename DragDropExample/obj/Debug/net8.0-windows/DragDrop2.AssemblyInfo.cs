@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("DragDrop2")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+200ed30793acfa3eed47290f9b6edc1bd3c659de")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e8b848bb2778c5769abe276c04ef1be1243445f0")]
 [assembly: System.Reflection.AssemblyProductAttribute("DragDrop2")]
 [assembly: System.Reflection.AssemblyTitleAttribute("DragDrop2")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

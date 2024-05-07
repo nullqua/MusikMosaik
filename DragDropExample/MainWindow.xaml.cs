@@ -1,6 +1,8 @@
-﻿using System.Windows;
+﻿using System.Diagnostics;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace DragDrop2
 {
@@ -12,9 +14,14 @@ namespace DragDrop2
         private bool isDragging = false;
         private Point clickPosition;
 
+        private UIElement selected;
+
         public MainWindow()
         {
             InitializeComponent();
+
+            this.Focusable = true;
+            this.Focus();
 
             foreach (UIElement child in panel.Children)
             {
@@ -113,9 +120,20 @@ namespace DragDrop2
 
             if (border != null)
             {
+                if (selected is Border previous)
+                {
+                    previous.BorderBrush = Brushes.Black;
+                    previous.BorderThickness = new Thickness(1);
+                }
+
+                selected = border;
+                border.BorderBrush = Brushes.Red;
+                border.BorderThickness = new Thickness(2);
+
                 isDragging = true;
                 clickPosition = e.GetPosition(border);
                 border.CaptureMouse();
+                e.Handled = true;
             }
         }
 
@@ -139,7 +157,26 @@ namespace DragDrop2
 
         private void CloneBorder_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            MessageBox.Show("Options");
+            MessageBox.Show("tbc", "Options");
+        }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if ((e.Key == Key.Delete || e.Key == Key.Back) && selected != null && canvas.Children.Contains(selected))
+            {
+                canvas.Children.Remove(selected);
+                selected = null;
+            }
+        }
+
+        private void Canvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (selected is Border border)
+            {
+                border.BorderBrush = Brushes.Black;
+                border.BorderThickness = new Thickness(1);
+                selected = null;
+            }
         }
     }
 }
