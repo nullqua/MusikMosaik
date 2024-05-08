@@ -15,7 +15,7 @@ namespace DragDrop2
         private Point clickPosition;
 
         private bool selectActive = true;
-        private UIElement selected;
+        private UIElement? selected;
 
         public MainWindow()
         {
