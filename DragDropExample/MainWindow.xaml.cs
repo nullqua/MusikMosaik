@@ -14,6 +14,7 @@ namespace DragDrop2
         private bool isDragging = false;
         private Point clickPosition;
 
+        private bool selectActive = true;
         private UIElement selected;
 
         public MainWindow()
@@ -22,6 +23,9 @@ namespace DragDrop2
 
             this.Focusable = true;
             this.Focus();
+
+            selectBtn.IsEnabled = selectActive;
+            penBtn.IsEnabled = !selectActive;
 
             foreach (UIElement child in panel.Children)
             {
@@ -196,6 +200,14 @@ namespace DragDrop2
                 }
             }
             return false;
+        }
+
+        private void SelectPenToggle_Click(object sender, RoutedEventArgs e)
+        {
+            selectActive = !selectActive;
+
+            selectBtn.IsEnabled = selectActive;
+            penBtn.IsEnabled = !selectActive;
         }
     }
 }
