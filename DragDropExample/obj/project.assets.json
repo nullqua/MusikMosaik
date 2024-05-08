@@ -13,9 +13,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\musikinformatik\\DragDropExample\\DragDrop2.csproj",
-      "projectName": "DragDrop2",
-      "projectPath": "E:\\musikinformatik\\DragDropExample\\DragDrop2.csproj",
+      "projectUniqueName": "E:\\musikinformatik\\DragDropExample\\DragDropExample.csproj",
+      "projectName": "DragDropExample",
+      "projectPath": "E:\\musikinformatik\\DragDropExample\\DragDropExample.csproj",
       "packagesPath": "C:\\Users\\Florian\\.nuget\\packages\\",
       "outputPath": "E:\\musikinformatik\\DragDropExample\\obj\\",
       "projectStyle": "PackageReference",
