@@ -40,13 +40,14 @@ namespace DragDrop2
 
         private void Border_MouseMove(object sender, MouseEventArgs e)
         {
-            if (e.LeftButton == MouseButtonState.Pressed)
+            Debug.WriteLine("Border_MouseMove");
+
+            if (e.LeftButton == MouseButtonState.Pressed && selectActive)
             {
                 var border = sender as Border;
 
                 if (border != null)
                 {
-                    var data = new DataObject(typeof(Border), border);
                     DragDrop.DoDragDrop(border, border, DragDropEffects.Copy);
                 }
             }
@@ -208,6 +209,8 @@ namespace DragDrop2
 
             selectBtn.IsEnabled = !selectActive;
             penBtn.IsEnabled = selectActive;
+
+            //TODO: bind to a property
         }
     }
 }
