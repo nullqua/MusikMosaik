@@ -37,6 +37,10 @@
             <Border BorderBrush="Black" BorderThickness="1" Height="30" Background="Orange">
                 <TextBlock>Play scale</TextBlock>
             </Border>
+            <Separator />
+            <Border Tag="start" BorderBrush="Black" BorderThickness="1" Height="30" Background="LightGreen">
+                <TextBlock>START</TextBlock>
+            </Border>
         </StackPanel>
         <Canvas x:Name="canvas" MouseLeftButtonDown="Canvas_MouseLeftButtonDown" AllowDrop="True" Grid.Column="1" Background="LightGray">
         </Canvas>

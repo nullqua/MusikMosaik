@@ -68,6 +68,12 @@ namespace DragDrop2
                 var originalBorder = e.Data.GetData(typeof(Border)) as Border;
                 if (originalBorder != null)
                 {
+                    if (originalBorder.Tag?.ToString() == "start" && CanvasContainsStartItem())
+                    {
+                        MessageBox.Show("Only one start item is allowed", "Error");
+                        return;
+                    }
+
                     var cloneBorder = new Border
                     {
                         Background = originalBorder.Background,
@@ -79,7 +85,8 @@ namespace DragDrop2
                             Text = ((TextBlock)originalBorder.Child).Text,
                             HorizontalAlignment = HorizontalAlignment.Center,
                             VerticalAlignment = VerticalAlignment.Center
-                        }
+                        },
+                        Tag = originalBorder.Tag
                     };
 
                     Canvas.SetLeft(cloneBorder, e.GetPosition(canvas).X);
@@ -177,6 +184,18 @@ namespace DragDrop2
                 border.BorderThickness = new Thickness(1);
                 selected = null;
             }
+        }
+
+        private bool CanvasContainsStartItem()
+        {
+            foreach (UIElement child in canvas.Children)
+            {
+                if (child is Border border && border.Tag?.ToString() == "start")
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }
