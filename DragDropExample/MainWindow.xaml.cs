@@ -40,8 +40,6 @@ namespace DragDrop2
 
         private void Border_MouseMove(object sender, MouseEventArgs e)
         {
-            Debug.WriteLine("Border_MouseMove");
-
             if (e.LeftButton == MouseButtonState.Pressed && selectActive)
             {
                 var border = sender as Border;

@@ -15,6 +15,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="25" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="25" />
         </Grid.RowDefinitions>
         <Grid Grid.ColumnSpan="2" Grid.Row="0">
             <Grid.ColumnDefinitions>
@@ -66,5 +67,6 @@
         </StackPanel>
         <Canvas x:Name="canvas" MouseLeftButtonDown="Canvas_MouseLeftButtonDown" AllowDrop="True" Grid.Column="1" Grid.Row="1" Background="LightGray">
         </Canvas>
+        <Label x:Name="statusBar" Grid.Row="2" Grid.ColumnSpan="2">status bar</Label>
     </Grid>
 </Window>
