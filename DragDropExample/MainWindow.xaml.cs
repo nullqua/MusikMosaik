@@ -24,8 +24,8 @@ namespace DragDrop2
             this.Focusable = true;
             this.Focus();
 
-            selectBtn.IsEnabled = selectActive;
-            penBtn.IsEnabled = !selectActive;
+            selectBtn.IsEnabled = !selectActive;
+            penBtn.IsEnabled = selectActive;
 
             foreach (UIElement child in panel.Children)
             {
@@ -129,7 +129,7 @@ namespace DragDrop2
         {
             var border = sender as Border;
 
-            if (border != null)
+            if (border != null && selectActive)
             {
                 if (selected is Border previous)
                 {
@@ -206,8 +206,8 @@ namespace DragDrop2
         {
             selectActive = !selectActive;
 
-            selectBtn.IsEnabled = selectActive;
-            penBtn.IsEnabled = !selectActive;
+            selectBtn.IsEnabled = !selectActive;
+            penBtn.IsEnabled = selectActive;
         }
     }
 }
