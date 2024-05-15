@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "E:\\musikinformatik\\Playground\\TestAudio\\TestAudio.csproj": {}
+    "C:\\Users\\wolfg\\Musikinformatik\\musikinformatik\\Playground\\TestAudio\\TestAudio.csproj": {}
   },
   "projects": {
-    "E:\\musikinformatik\\Playground\\TestAudio\\TestAudio.csproj": {
+    "C:\\Users\\wolfg\\Musikinformatik\\musikinformatik\\Playground\\TestAudio\\TestAudio.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\musikinformatik\\Playground\\TestAudio\\TestAudio.csproj",
+        "projectUniqueName": "C:\\Users\\wolfg\\Musikinformatik\\musikinformatik\\Playground\\TestAudio\\TestAudio.csproj",
         "projectName": "TestAudio",
-        "projectPath": "E:\\musikinformatik\\Playground\\TestAudio\\TestAudio.csproj",
-        "packagesPath": "C:\\Users\\Florian\\.nuget\\packages\\",
-        "outputPath": "E:\\musikinformatik\\Playground\\TestAudio\\obj\\",
+        "projectPath": "C:\\Users\\wolfg\\Musikinformatik\\musikinformatik\\Playground\\TestAudio\\TestAudio.csproj",
+        "packagesPath": "C:\\Users\\wolfg\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\wolfg\\Musikinformatik\\musikinformatik\\Playground\\TestAudio\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Florian\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\wolfg\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
