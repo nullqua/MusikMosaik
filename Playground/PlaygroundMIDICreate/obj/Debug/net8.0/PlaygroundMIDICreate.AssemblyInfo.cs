@@ -11,15 +11,13 @@
 using System;
 using System.Reflection;
 
-[assembly: System.Reflection.AssemblyCompanyAttribute("DragDropExample")]
+[assembly: System.Reflection.AssemblyCompanyAttribute("PlaygroundMIDICreate")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a8af082b91440eeef78376cdd3da88f4ff891bb7")]
-[assembly: System.Reflection.AssemblyProductAttribute("DragDropExample")]
-[assembly: System.Reflection.AssemblyTitleAttribute("DragDropExample")]
+[assembly: System.Reflection.AssemblyProductAttribute("PlaygroundMIDICreate")]
+[assembly: System.Reflection.AssemblyTitleAttribute("PlaygroundMIDICreate")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
-[assembly: System.Runtime.Versioning.TargetPlatformAttribute("Windows7.0")]
-[assembly: System.Runtime.Versioning.SupportedOSPlatformAttribute("Windows7.0")]
 
 // Von der MSBuild WriteCodeFragment-Klasse generiert.
 

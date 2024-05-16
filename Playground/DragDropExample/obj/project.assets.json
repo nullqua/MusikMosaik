@@ -8,19 +8,19 @@
     "net8.0-windows7.0": []
   },
   "packageFolders": {
-    "C:\\Users\\Florian\\.nuget\\packages\\": {}
+    "C:\\Users\\wolfg\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\musikinformatik\\Playground\\DragDropExample\\DragDropExample.csproj",
+      "projectUniqueName": "C:\\Users\\wolfg\\Musikinformatik\\musikinformatik\\Playground\\DragDropExample\\DragDropExample.csproj",
       "projectName": "DragDropExample",
-      "projectPath": "E:\\musikinformatik\\Playground\\DragDropExample\\DragDropExample.csproj",
-      "packagesPath": "C:\\Users\\Florian\\.nuget\\packages\\",
-      "outputPath": "E:\\musikinformatik\\Playground\\DragDropExample\\obj\\",
+      "projectPath": "C:\\Users\\wolfg\\Musikinformatik\\musikinformatik\\Playground\\DragDropExample\\DragDropExample.csproj",
+      "packagesPath": "C:\\Users\\wolfg\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\wolfg\\Musikinformatik\\musikinformatik\\Playground\\DragDropExample\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Florian\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\wolfg\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
