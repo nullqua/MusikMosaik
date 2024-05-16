@@ -86,7 +86,7 @@ namespace app.Components
                     }
                 };
 
-                container.Children.Add(newCodeBlock);
+                container.Children.Insert(container.Children.Count - 1, newCodeBlock);
 
                 // Update the width of the container to accommodate the new code block
                 container.Width += 70;
