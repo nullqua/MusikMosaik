@@ -88,13 +88,8 @@ namespace app.Components
 
                 container.Children.Insert(container.Children.Count - 1, newCodeBlock);
 
-                // Update the width of the container to accommodate the new code block
                 container.Width += 70;
-                //outerBorder.Width += newCodeBlock.Width;
-                //grid.Width += newCodeBlock.Width;
-                //innerBorder.Width += newCodeBlock.Width;
 
-                Debug.WriteLine(newCodeBlock.Width);
                 e.Handled = true;
             }
         }
