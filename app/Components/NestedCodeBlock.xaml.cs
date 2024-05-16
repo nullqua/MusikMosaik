@@ -28,7 +28,7 @@ namespace app.Components
 
         public static readonly DependencyProperty TypeProperty = DependencyProperty.Register(
             "Type", typeof(string), typeof(NestedCodeBlock), new PropertyMetadata(default(string)));
-    
+
         public static readonly DependencyProperty CountProperty = DependencyProperty.Register(
             "Count", typeof(string), typeof(NestedCodeBlock), new PropertyMetadata(default(string)));
 
@@ -87,7 +87,25 @@ namespace app.Components
                 };
 
                 container.Children.Add(newCodeBlock);
+
+                // Update the width of the container to accommodate the new code block
+                container.Width += 70;
+                //outerBorder.Width += newCodeBlock.Width;
+                //grid.Width += newCodeBlock.Width;
+                //innerBorder.Width += newCodeBlock.Width;
+
+                Debug.WriteLine(newCodeBlock.Width);
+                e.Handled = true;
             }
         }
+
+        private void StackPanel_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (sender is StackPanel stackPanel)
+            {
+                this.Width = stackPanel.Width;
+                this.Height = stackPanel.Height;
+            }
+        }   
     }
 }

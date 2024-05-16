@@ -61,6 +61,8 @@ namespace app
                         Count = "5",
                         LoopCodeBlock = loopCodeBlock
                     };
+
+                    Debug.WriteLine(Width);
                 }
                 else
                 {
@@ -80,7 +82,7 @@ namespace app
                     };
                 }
                 
-                codeBlocksPlacement.Children.Add(newCodeBlock);
+                codeBlocksPlacement.Children.Insert(codeBlocksPlacement.Children.Count - 1, newCodeBlock);
             }
         }
     }
