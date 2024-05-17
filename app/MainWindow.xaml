@@ -62,7 +62,6 @@
                     <TextBlock FontSize="18"  HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Grid.Row="3">Notenschrift</TextBlock>
                     <ScrollViewer HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Disabled" Grid.Column="1" Grid.Row="1">
                         <StackPanel x:Name="codeBlocksPlacement" Drop="CodeBlocksPlacement_Drop" AllowDrop="True" Orientation="Horizontal">
-                            <Label x:Name="placementHint" VerticalAlignment="Center">Hier Code-Blöcke hinziehen...</Label>
                             <Border Drop="CodeBlocksPlacement_Drop" Width="100" Margin="5" BorderBrush="Orange" BorderThickness="2" Background="Transparent">
                                 <TextBlock FontWeight="Bold" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center">+</TextBlock>
                             </Border>
