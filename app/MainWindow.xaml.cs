@@ -83,6 +83,8 @@ namespace app
                 }
                 
                 codeBlocksPlacement.Children.Insert(codeBlocksPlacement.Children.Count - 1, newCodeBlock);
+                
+                e.Handled = true;
             }
         }
     }
