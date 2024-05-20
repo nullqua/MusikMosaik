@@ -121,5 +121,10 @@ namespace app
                 e.Handled = true;
             }
         }
+
+        private void DeleteAll_Click(object sender, RoutedEventArgs e)
+        {
+            codeBlocksPlacement.Children.Clear();
+        }
     }
 }
