@@ -71,7 +71,7 @@ namespace app.Components
                 if (newCodeBlock is Border border)
                 {
                     border.MouseLeftButtonDown += (Application.Current.MainWindow as MainWindow).CodeBlock_MouseLeftButtonDown;
-                    border.KeyDown += (Application.Current.MainWindow as MainWindow).CodeBlock_KeyDown;
+                    border.MouseRightButtonDown += (Application.Current.MainWindow as MainWindow).CodeBlock_MouseRightButtonDown;
                 }
                 container.Children.Insert(container.Children.Count - 1, newCodeBlock);
 

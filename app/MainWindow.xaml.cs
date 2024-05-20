@@ -57,22 +57,10 @@ namespace app
             }
         }
 
-        internal void CodeBlock_KeyDown(object sender, KeyEventArgs e)
+        internal void CodeBlock_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            Debug.WriteLine("triggered");
-
-            if (e.Key == Key.Escape)
-            {
-                (selected as Border).BorderBrush = Brushes.Transparent;
-                (selected as Border).BorderThickness = new Thickness(0);
-
-                selected = null;
-            }
-            else if (e.Key == Key.Delete)
-            {
-                codeBlocksPlacement.Children.Remove(selected);
-                selected = null;
-            }
+            codeBlocksPlacement.Children.Remove(selected);
+            selected = null;
         }
 
         private void CodeBlocksPlacement_Drop(object sender, DragEventArgs e)
@@ -113,7 +101,7 @@ namespace app
                     {
                         border.Focusable = true;
                         border.MouseLeftButtonDown += CodeBlock_MouseLeftButtonDown;
-                        border.KeyDown += CodeBlock_KeyDown;
+                        border.MouseRightButtonDown += CodeBlock_MouseRightButtonDown;
                     }
                 }
                 
