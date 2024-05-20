@@ -14,6 +14,9 @@ namespace app
     {
         private UIElement selected;
 
+        private double clickDelay = 200;
+        private DateTime lastClickTime = DateTime.MinValue;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -38,23 +41,31 @@ namespace app
 
         internal void CodeBlock_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (selected != null)
+            TimeSpan timeSinceLastClick = DateTime.Now - lastClickTime;
+
+            if (timeSinceLastClick.TotalMilliseconds <= clickDelay)
             {
-                (selected as Border).BorderBrush = Brushes.Transparent;
-                (selected as Border).BorderThickness = new Thickness(0);
-
-                selected = null;
+                throw new NotImplementedException();
             }
-            else 
+            else
             {
-                selected = sender as UIElement;
+                if (selected != null)
+                {
+                    (selected as Border).BorderBrush = Brushes.Transparent;
+                    (selected as Border).BorderThickness = new Thickness(0);
 
-                (selected as Border).BorderBrush = Brushes.Orange;
-                (selected as Border).BorderThickness = new Thickness(2);
+                    selected = null;
+                }
+                else
+                {
+                    selected = sender as UIElement;
 
-                selected.Focus();
-                Keyboard.Focus(selected);
+                    (selected as Border).BorderBrush = Brushes.Orange;
+                    (selected as Border).BorderThickness = new Thickness(2);
+                }
             }
+
+            lastClickTime = DateTime.Now;
         }
 
         internal void CodeBlock_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
