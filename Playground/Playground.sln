@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DragDropExample", "DragDrop
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestAudio", "TestAudio\TestAudio.csproj", "{C8784134-BE26-4999-AF09-9061885944C1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PdfExtract", "PdfExtract\PdfExtract.csproj", "{2C3438E2-FB0D-4227-9FAA-E11DD6F401D6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PdfExtract", "PdfExtract\PdfExtract.csproj", "{2C3438E2-FB0D-4227-9FAA-E11DD6F401D6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
