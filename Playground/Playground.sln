@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DragDropExample", "DragDrop
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestAudio", "TestAudio\TestAudio.csproj", "{C8784134-BE26-4999-AF09-9061885944C1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PdfExtract", "PdfExtract\PdfExtract.csproj", "{2C3438E2-FB0D-4227-9FAA-E11DD6F401D6}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,10 +21,6 @@ Global
 		{C8784134-BE26-4999-AF09-9061885944C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C8784134-BE26-4999-AF09-9061885944C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C8784134-BE26-4999-AF09-9061885944C1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2C3438E2-FB0D-4227-9FAA-E11DD6F401D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2C3438E2-FB0D-4227-9FAA-E11DD6F401D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2C3438E2-FB0D-4227-9FAA-E11DD6F401D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2C3438E2-FB0D-4227-9FAA-E11DD6F401D6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
