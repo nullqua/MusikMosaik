@@ -14,7 +14,7 @@ namespace app
     {
         private UIElement selected;
 
-        private double clickDelay = 200;
+        private readonly double clickDelay = 200;
         private DateTime lastClickTime = DateTime.MinValue;
 
         public MainWindow()
