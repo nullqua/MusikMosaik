@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "songfileGenerator": {
+      "commandName": "Project",
+      "commandLineArgs": "\"C:\\Users\\Florian\\Desktop\\tmp\\Bruder-Jakob-MSC.musicxml\" 2 \"C:\\Users\\Florian\\Desktop\\tmp\\out\""
+    }
+  }
+}
