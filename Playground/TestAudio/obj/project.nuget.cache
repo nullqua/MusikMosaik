@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "BgTt+JIsol6Q+WJCFptcSoKN6xaFnGBpwIa10qHuwAwHG2j9BNRRkREm0Toc0fG0wVYS3Uaxz+BCGD/aRpUMBQ==",
+  "dgSpecHash": "dH1BVaxWsaSSIjW9kyrwzfawTR+QaWKlf39c4+3BYXDTJDquKvlgVD+QexcMerHU8RkP3gJ8ib6X/3PyIy6WOQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\wolfg\\Musikinformatik\\musikinformatik\\Playground\\TestAudio\\TestAudio.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\wolfg\\.nuget\\packages\\melanchall.drywetmidi\\7.1.0\\melanchall.drywetmidi.7.1.0.nupkg.sha512",
     "C:\\Users\\wolfg\\.nuget\\packages\\meltysynth\\2.4.1\\meltysynth.2.4.1.nupkg.sha512",
     "C:\\Users\\wolfg\\.nuget\\packages\\microsoft.netcore.platforms\\3.1.0\\microsoft.netcore.platforms.3.1.0.nupkg.sha512",
     "C:\\Users\\wolfg\\.nuget\\packages\\microsoft.win32.registry\\4.7.0\\microsoft.win32.registry.4.7.0.nupkg.sha512",

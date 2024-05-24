@@ -45,6 +45,10 @@
         "net8.0-windows7.0": {
           "targetAlias": "net8.0-windows",
           "dependencies": {
+            "Melanchall.DryWetMidi": {
+              "target": "Package",
+              "version": "[7.1.0, )"
+            },
             "MeltySynth": {
               "target": "Package",
               "version": "[2.4.1, )"

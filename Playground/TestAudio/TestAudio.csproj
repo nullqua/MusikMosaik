@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Melanchall.DryWetMidi" Version="7.1.0" />
     <PackageReference Include="MeltySynth" Version="2.4.1" />
     <PackageReference Include="NAudio" Version="2.2.1" />
   </ItemGroup>

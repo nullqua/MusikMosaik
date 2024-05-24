@@ -2,6 +2,22 @@
   "version": 3,
   "targets": {
     "net8.0-windows7.0": {
+      "Melanchall.DryWetMidi/7.1.0": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/Melanchall.DryWetMidi.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/Melanchall.DryWetMidi.dll": {
+            "related": ".xml"
+          }
+        },
+        "build": {
+          "build/Melanchall.DryWetMidi.targets": {}
+        }
+      },
       "MeltySynth/2.4.1": {
         "type": "package",
         "compile": {
@@ -219,6 +235,27 @@
     }
   },
   "libraries": {
+    "Melanchall.DryWetMidi/7.1.0": {
+      "sha512": "QfzIC6ImJFxpDEG+W+ZCd17aUjXQjcnJpXRJc7PXjSNAY1LtaL4IV0RLIKU5fLp1XVYYy0eXIaRL3hZ0p378fA==",
+      "type": "package",
+      "path": "melanchall.drywetmidi/7.1.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "build/Melanchall.DryWetMidi.targets",
+        "build/Melanchall_DryWetMidi_Native32.dll",
+        "build/Melanchall_DryWetMidi_Native64.dll",
+        "build/Melanchall_DryWetMidi_Native64.dylib",
+        "icon.png",
+        "lib/net45/Melanchall.DryWetMidi.dll",
+        "lib/net45/Melanchall.DryWetMidi.xml",
+        "lib/netstandard2.0/Melanchall.DryWetMidi.dll",
+        "lib/netstandard2.0/Melanchall.DryWetMidi.xml",
+        "melanchall.drywetmidi.7.1.0.nupkg.sha512",
+        "melanchall.drywetmidi.nuspec"
+      ]
+    },
     "MeltySynth/2.4.1": {
       "sha512": "5Rzqh2H8bSZ+bna5hMbsQwEdqdaCEIkBaWzCSyKa5VV5oDZ9Zfi53dkGrUqdkQGT45Ltmv1WSzFlgmI9cD1I1w==",
       "type": "package",
@@ -510,6 +547,7 @@
   },
   "projectFileDependencyGroups": {
     "net8.0-windows7.0": [
+      "Melanchall.DryWetMidi >= 7.1.0",
       "MeltySynth >= 2.4.1",
       "NAudio >= 2.2.1"
     ]
@@ -558,6 +596,10 @@
       "net8.0-windows7.0": {
         "targetAlias": "net8.0-windows",
         "dependencies": {
+          "Melanchall.DryWetMidi": {
+            "target": "Package",
+            "version": "[7.1.0, )"
+          },
           "MeltySynth": {
             "target": "Package",
             "version": "[2.4.1, )"

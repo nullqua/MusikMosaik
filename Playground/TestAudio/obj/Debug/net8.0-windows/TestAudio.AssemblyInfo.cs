@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TestAudio")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a8af082b91440eeef78376cdd3da88f4ff891bb7")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c53eddcd474d18a3e7b45b1cee02ad80107a0179")]
 [assembly: System.Reflection.AssemblyProductAttribute("TestAudio")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TestAudio")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
