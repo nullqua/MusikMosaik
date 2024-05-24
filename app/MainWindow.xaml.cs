@@ -1,15 +1,9 @@
 ﻿using app.Components;
 using System.Diagnostics;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace app
 {
@@ -18,6 +12,11 @@ namespace app
     /// </summary>
     public partial class MainWindow : Window
     {
+        private UIElement selected;
+
+        private readonly double clickDelay = 200;
+        private DateTime lastClickTime = DateTime.MinValue;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -40,15 +39,45 @@ namespace app
             }
         }
 
+        internal void CodeBlock_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            TimeSpan timeSinceLastClick = DateTime.Now - lastClickTime;
+
+            if (timeSinceLastClick.TotalMilliseconds <= clickDelay)
+            {
+                throw new NotImplementedException();
+            }
+            else
+            {
+                if (selected != null)
+                {
+                    (selected as Border).BorderBrush = Brushes.Transparent;
+                    (selected as Border).BorderThickness = new Thickness(0);
+
+                    selected = null;
+                }
+                else
+                {
+                    selected = sender as UIElement;
+
+                    (selected as Border).BorderBrush = Brushes.Orange;
+                    (selected as Border).BorderThickness = new Thickness(2);
+                }
+            }
+
+            lastClickTime = DateTime.Now;
+        }
+
+        internal void CodeBlock_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            codeBlocksPlacement.Children.Remove(selected);
+            selected = null;
+        }
+
         private void CodeBlocksPlacement_Drop(object sender, DragEventArgs e)
         {
             if (e.Data.GetData(typeof(Border)) is Border codeBlock)
             {
-                if (codeBlocksPlacement.Children.Contains(placementHint))
-                {
-                    codeBlocksPlacement.Children.Remove(placementHint);
-                }
-
                 dynamic newCodeBlock;
 
                 if (codeBlock == loopCodeBlock)
@@ -78,10 +107,24 @@ namespace app
                             VerticalAlignment = (codeBlock.Child as TextBlock)?.VerticalAlignment ?? VerticalAlignment.Top
                         }
                     };
+
+                    if (newCodeBlock is Border border)
+                    {
+                        border.Focusable = true;
+                        border.MouseLeftButtonDown += CodeBlock_MouseLeftButtonDown;
+                        border.MouseRightButtonDown += CodeBlock_MouseRightButtonDown;
+                    }
                 }
                 
-                codeBlocksPlacement.Children.Add(newCodeBlock);
+                codeBlocksPlacement.Children.Insert(codeBlocksPlacement.Children.Count - 1, newCodeBlock);
+                
+                e.Handled = true;
             }
+        }
+
+        private void DeleteAll_Click(object sender, RoutedEventArgs e)
+        {
+            codeBlocksPlacement.Children.Clear();
         }
     }
 }

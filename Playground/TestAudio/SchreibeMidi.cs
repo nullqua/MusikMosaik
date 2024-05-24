@@ -15,7 +15,7 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrackBar;
 
 public class SchreibeMidi
 {
-    public static string erstelleMidi(string midiname)
+    public static string erstellespezifischMidi(string midiname)
     {
         var midiFile = new MidiFile();
         var pattern = new PatternBuilder()
@@ -34,5 +34,24 @@ public class SchreibeMidi
         midiFile.Write(midiname+ ".mid", overwriteFile: true);
 
         return midiname+".mid";
+    }
+    public static string erstelleMidi(string midiname, int[] array)
+    {
+        var midiFile = new MidiFile();
+        var patternBuilder = new PatternBuilder();
+        for(int i = 0; i < array.Length; i++)
+        {
+            switch (array[i])
+            {
+                case 1:
+                    patternBuilder.Note(Octave.Get(2).C);
+                    break;
+            }
+        }
+        var pattern = patternBuilder.Build();
+        midiFile = pattern.ToFile(TempoMap.Create(Tempo.FromBeatsPerMinute(100)));
+        midiFile.TimeDivision = new TicksPerQuarterNoteTimeDivision(100);
+        midiFile.Write(midiname + ".mid", overwriteFile: true);
+        return midiname + ".mid";
     }
 }

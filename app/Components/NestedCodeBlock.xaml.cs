@@ -1,18 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace app.Components
 {
@@ -28,7 +15,7 @@ namespace app.Components
 
         public static readonly DependencyProperty TypeProperty = DependencyProperty.Register(
             "Type", typeof(string), typeof(NestedCodeBlock), new PropertyMetadata(default(string)));
-    
+
         public static readonly DependencyProperty CountProperty = DependencyProperty.Register(
             "Count", typeof(string), typeof(NestedCodeBlock), new PropertyMetadata(default(string)));
 
@@ -66,11 +53,6 @@ namespace app.Components
 
             if (e.Data.GetData(typeof(Border)) is Border codeBlock)
             {
-                if (container.Children.Contains(placementHint))
-                {
-                    container.Children.Remove(placementHint);
-                }
-
                 var newCodeBlock = new Border
                 {
                     Width = 70,
@@ -86,8 +68,26 @@ namespace app.Components
                     }
                 };
 
-                container.Children.Add(newCodeBlock);
+                if (newCodeBlock is Border border)
+                {
+                    border.MouseLeftButtonDown += (Application.Current.MainWindow as MainWindow).CodeBlock_MouseLeftButtonDown;
+                    border.MouseRightButtonDown += (Application.Current.MainWindow as MainWindow).CodeBlock_MouseRightButtonDown;
+                }
+                container.Children.Insert(container.Children.Count - 1, newCodeBlock);
+
+                container.Width += 70;
+
+                e.Handled = true;
             }
         }
+
+        private void StackPanel_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (sender is StackPanel stackPanel)
+            {
+                Width = stackPanel.Width;
+                Height = stackPanel.Height;
+            }
+        }   
     }
 }
