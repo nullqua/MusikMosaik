@@ -19,18 +19,15 @@ public class SchreibeMidi
     {
         var midiFile = new MidiFile();
         var pattern = new PatternBuilder()
-        .SetNoteLength(new MidiTimeSpan(100))
+        //.SetNoteLength(new MusicalTimeSpan(1,4,true))
         //.SetNoteLength(MusicalTimeSpan.Quarter)
         .SetVelocity((SevenBitNumber)100)
-        .Note(Octave.Get(2).C)
+        .Note("C3", MusicalTimeSpan.Quarter)
         .Repeat(1,10)
-        .SetVelocity((SevenBitNumber)50)
-        .Note(Octave.Get(2).C, new MidiTimeSpan(50))
-        .Repeat(1, 10)
         .Build();
-        
-        midiFile = pattern.ToFile(TempoMap.Create(Tempo.FromBeatsPerMinute(100)));
-        midiFile.TimeDivision = new TicksPerQuarterNoteTimeDivision(100);
+
+        midiFile = pattern.ToFile(TempoMap.Create(new TicksPerQuarterNoteTimeDivision(480), Tempo.FromBeatsPerMinute(60)));
+
         midiFile.Write(midiname+ ".mid", overwriteFile: true);
 
         return midiname+".mid";
@@ -54,4 +51,26 @@ public class SchreibeMidi
         midiFile.Write(midiname + ".mid", overwriteFile: true);
         return midiname + ".mid";
     }
+    public static MidiFile buildMidi(string midiName, PatternBuilder patternBuilder, short bpm)
+    {
+        var midiFile = new MidiFile();
+        var pattern = patternBuilder.Build();
+        midiFile = pattern.ToFile(TempoMap.Create(Tempo.FromBeatsPerMinute(bpm)));
+        midiFile.TimeDivision = new TicksPerQuarterNoteTimeDivision(bpm);
+        midiFile.Write(midiName + ".mid", overwriteFile: true);
+        return midiFile;
+    }
+    public static PatternBuilder newPatternBuild(string pattern) 
+    { 
+        return new PatternBuilder();
+    }
+    public static PatternBuilder addNoteToPattern(PatternBuilder patternBuilder, string note, int notenlange)
+    {
+        patternBuilder.SetNoteLength(new MidiTimeSpan());
+        patternBuilder.Note(note);
+        
+        return patternBuilder;
+    }
+
+
 }
