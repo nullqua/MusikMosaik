@@ -15,7 +15,9 @@ namespace songfileGenerator
             int measuresPerFile;
             string outputFilePath;
 
-            if (args.Length == 3)
+            bool debugMode = args.Contains("--debug");
+
+            if (args.Length > 0)
             {
                 inputFilePath = args[0];
                 measuresPerFile = int.Parse(args[1]);
@@ -48,7 +50,7 @@ namespace songfileGenerator
                 doc.Descendants("lyric").Remove();
 
                 string fullMidiPath = "score.mid";
-                ConvertToMidi(doc, fullMidiPath);
+                ConvertToMidi(doc, fullMidiPath, debugMode);
 
                 var measureElementsByPart = doc.Descendants("part").ToDictionary(
                     part => (string)part.Attribute("id"),
@@ -63,7 +65,11 @@ namespace songfileGenerator
                 string tempDir = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
                 Directory.CreateDirectory(tempDir);
 
-                Console.WriteLine($"Temporären Ordner erstellt ({tempDir}).");
+                Console.WriteLine("Temporären Ordner erstellt.");
+                if (debugMode)
+                {
+                    Console.WriteLine(tempDir);
+                }
 
                 string sectionsDir = Path.Combine(tempDir, "sections");
                 Directory.CreateDirectory("sections");
@@ -94,12 +100,15 @@ namespace songfileGenerator
                     string sectionDir = Path.Combine(sectionsDir, $"section_{fileIndex + 1}");
                     Directory.CreateDirectory(sectionDir);
 
+                    string sectionMusicXmlPath = Path.Combine(sectionDir, "section.musicxml");
+                    sectionDoc.Save(sectionMusicXmlPath);
+
                     string sectionMidiPath = Path.Combine(sectionDir, "score.mid");
                     string sectionPngPathTemplate = Path.Combine(sectionDir, "score.png");
 
                     Console.WriteLine($"MIDI-Datei für Abschnitt {fileIndex + 1} erstellen...");
 
-                    ConvertToMidi(sectionDoc, sectionMidiPath);
+                    ConvertToMidi(sectionDoc, sectionMidiPath, debugMode);
 
                     Console.WriteLine($"PNG-Datei für Abschnitt {fileIndex + 1} erstellen...");
 
@@ -107,6 +116,13 @@ namespace songfileGenerator
 
                     string sectionPngPath = Directory.GetFiles(sectionDir, "score*.png").FirstOrDefault();
                     CropImage(sectionPngPath);
+
+                    if (debugMode)
+                    {
+                        Console.WriteLine($"Section {fileIndex + 1} MusicXML Path: {sectionMusicXmlPath}");
+                        Console.WriteLine($"Section {fileIndex + 1} MIDI Path: {sectionMidiPath}");
+                        Console.WriteLine($"Section {fileIndex + 1} PNG Path: {sectionPngPath}");
+                    }
                 }
 
                 Console.WriteLine("Erstelle Archiv...");
@@ -135,9 +151,13 @@ namespace songfileGenerator
                     // Metadata
                 }
 
-                Console.WriteLine("Temporäre Dateien werden bereinigt...");
-                Directory.Delete(tempDir, true);
-                File.Delete(fullMidiPath);
+
+                if (!debugMode)
+                {
+                    Console.WriteLine("Temporäre Dateien werden bereinigt...");
+                    Directory.Delete(tempDir, true);
+                    File.Delete(fullMidiPath);
+                }
 
                 Console.WriteLine("Die mczip-Datei wurde erfolgreich erstellt.");
             }
@@ -147,7 +167,7 @@ namespace songfileGenerator
             }   
         }
 
-        private static void ConvertToMidi(XDocument xmlDoc, string outputPath)
+        private static void ConvertToMidi(XDocument xmlDoc, string outputPath, bool debugMode)
         {
             string tempXmlPath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString() + ".musicxml");
             xmlDoc.Save(tempXmlPath);
@@ -163,6 +183,15 @@ namespace songfileGenerator
             {
                 process.Start();
                 process.WaitForExit();
+
+                if (debugMode)
+                {
+                    string output = process.StandardOutput.ReadToEnd();
+                    string error = process.StandardError.ReadToEnd();
+
+                    Console.WriteLine(output);
+                    Console.WriteLine(error);
+                }
             }
             catch (Exception e)
             {
@@ -170,7 +199,10 @@ namespace songfileGenerator
                 Console.Error.WriteLine(e.Message);
             }
 
-            File.Delete(tempXmlPath);
+            if (!debugMode)
+            {
+                File.Delete(tempXmlPath);
+            }
         }
 
         private static void ConvertToPng(XDocument xmlDoc, string outputPathTemplate)
