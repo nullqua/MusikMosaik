@@ -1,4 +1,7 @@
-*/.idea
+*/.idea/usage.statistics.xml
+*/.idea/shelf
+*/.idea/workspace.xml
+*/.idea/tasks.xml
 */.venv
 */.vs
 */obj
