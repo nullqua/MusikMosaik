@@ -5,8 +5,6 @@ VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "app", "app.csproj", "{6EE4302F-6153-4854-AA81-EEEFC383FBEA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "songfileGenerator", "..\songfileGenerator\songfileGenerator.csproj", "{25D2417F-C2E1-41A3-84A3-BB7EB70A1F84}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,10 +15,6 @@ Global
 		{6EE4302F-6153-4854-AA81-EEEFC383FBEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6EE4302F-6153-4854-AA81-EEEFC383FBEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6EE4302F-6153-4854-AA81-EEEFC383FBEA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{25D2417F-C2E1-41A3-84A3-BB7EB70A1F84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{25D2417F-C2E1-41A3-84A3-BB7EB70A1F84}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{25D2417F-C2E1-41A3-84A3-BB7EB70A1F84}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{25D2417F-C2E1-41A3-84A3-BB7EB70A1F84}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
