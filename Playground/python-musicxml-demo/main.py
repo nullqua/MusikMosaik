@@ -2,7 +2,7 @@ import os
 import shutil
 import zipfile
 import argparse
-from music21 import converter, stream, midi
+from music21 import converter, stream, midi, environment
 from music21.musicxml.m21ToXml import ScoreExporter
 from PIL import Image
 import xml.etree.ElementTree as ET
@@ -31,7 +31,8 @@ def convert_to_midi(section, midi_path):
 
 def convert_to_png(section, png_path):
     png_file_path = f'{png_path}.png'
-    section.write('musicxml.png', fp=png_file_path)
+    section.write(section, fmt='lilypond', fp=png_file_path, subformats=['png'])
+
     return png_file_path
 
 
@@ -66,6 +67,10 @@ def create_zip_file(output_zip_path, sections_dir, full_midi_path, metadata_cont
 
 
 def main(input_file, output_zip, measures_per_file, crop_height, debug_mode):
+    us = environment.UserSettings()
+    us['lilypondPath'] = 'C:\\Users\\Florian\\Downloads\\lilypond-2.24.3\\bin\\lilypond.exe'
+    print(us['lilypondPath'])
+
     score = converter.parse(input_file)
     remove_lyrics(score)
 
