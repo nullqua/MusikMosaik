@@ -33,44 +33,14 @@
                 <ColumnDefinition Width="150"/>
             </Grid.ColumnDefinitions>
             <ScrollViewer Grid.Column="0">
-                <StackPanel>
-                    <Button Height="50">Song A</Button>
-                    <Button Height="50">Song B</Button>
-                    <Button Height="50">Song C</Button>
-                    <Button Height="50">Song D</Button>
+                <StackPanel x:Name="songPanel">
+                    
                 </StackPanel>
             </ScrollViewer>
             <ScrollViewer Background="#f7f7f7" Grid.Column="1">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="50"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="2*"/>
-                        <RowDefinition Height="10"/>
-                    </Grid.RowDefinitions>
-                    <Button Grid.Column="0" Grid.Row="0">⏵</Button>
-                    <Grid Grid.Column="0" Grid.Row="1">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
-                        <Button Grid.Row="0">⏵</Button>
-                        <Button Click="DeleteAll_Click" Grid.Row="1">Löschen</Button> 
-                    </Grid>
+                <StackPanel x:Name="mainPanel" Orientation="Vertical">
                     
-                    <TextBlock FontSize="18"  HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Grid.Row="0">Notenschrift</TextBlock>
-                    <Separator Grid.ColumnSpan="2" Grid.Row="2"/>
-                    <ScrollViewer HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Disabled" Grid.Column="1" Grid.Row="1">
-                        <StackPanel x:Name="codeBlocksPlacement" Drop="CodeBlocksPlacement_Drop" AllowDrop="True" Orientation="Horizontal">
-                            <Border Drop="CodeBlocksPlacement_Drop" Width="100" Margin="5" BorderBrush="Gray" BorderThickness="2" Background="Transparent">
-                                <TextBlock FontWeight="Bold" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center">+</TextBlock>
-                            </Border>
-                        </StackPanel>
-                    </ScrollViewer>
-                </Grid>
+                </StackPanel>
             </ScrollViewer>
             <StackPanel x:Name="codeBlocksPanel" Grid.Column="2">
                 <StackPanel.Resources>

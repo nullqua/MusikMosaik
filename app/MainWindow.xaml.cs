@@ -1,9 +1,13 @@
 ﻿using app.Components;
 using System.Diagnostics;
+using System.IO;
+using System.IO.Compression;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace app
 {
@@ -21,6 +25,40 @@ namespace app
         {
             InitializeComponent();
 
+            string[] files = Directory.GetFiles(@"..\..\..\examples");
+
+            foreach (string file in files)
+            {
+                Button button = new Button
+                {
+                    Content = Path.GetFileNameWithoutExtension(file)
+                };
+
+                button.Click += (sender, e) => {
+                    mainPanel.Children.Clear();
+                    OpenFile(file);
+
+                    foreach (var button in songPanel.Children.OfType<Button>())
+                    {
+                        button.IsEnabled = true;
+                    }
+
+                    var clickedButton = (Button)sender;
+                    clickedButton.IsEnabled = false;
+                };
+                songPanel.Children.Add(button);
+            }
+
+            TextBlock placeholder = new TextBlock
+            {
+                Text = "Click a song to load",
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center,
+                Margin = new Thickness(20)
+            };
+            mainPanel.Children.Add(placeholder);
+
+
             foreach (UIElement child in codeBlocksPanel.Children)
             {
                 if (child is Border)
@@ -28,6 +66,143 @@ namespace app
                     child.PreviewMouseLeftButtonDown += CodeBlocksPanel_PreviewMouseLeftButtonDown;
                 }
             }
+        }
+
+        private void OpenFile(string filePath)
+        {
+            using (ZipArchive archive = ZipFile.OpenRead(filePath))
+            {
+                Debug.WriteLine("Opened file");
+                
+                foreach (var entry in archive.Entries)
+                {
+                    Debug.WriteLine(entry.FullName);
+                }
+
+                var sectionDireories = archive.Entries
+                    .Where(e => e.FullName.StartsWith("sections/") && e.FullName.EndsWith("/"))
+                    .Select(e => e.FullName.Split('/')[1])
+                    .Distinct()
+                    .ToList();
+
+                foreach (var directory in sectionDireories)
+                {
+                    var scorePngEntry = archive.Entries.FirstOrDefault(e => e.FullName == $"sections/{directory}/score.png");
+                    if (scorePngEntry != null)
+                    {
+                        BitmapImage bitmap = new BitmapImage();
+                        using (Stream stream = scorePngEntry.Open())
+                        {
+                            MemoryStream ms = new MemoryStream();
+                            stream.CopyTo(ms);
+                            ms.Position = 0;
+
+                            bitmap.BeginInit();
+                            bitmap.StreamSource = ms;
+                            bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                            bitmap.EndInit();
+                            //bitmap.Freeze();
+                        }
+                        AddRowToMainPanel(directory, bitmap);
+                    }
+                }
+            }   
+        }
+
+        private void AddRowToMainPanel(string directoryName, BitmapImage image)
+        {
+            Grid grid = new Grid
+            {
+                Margin = new Thickness(10)
+            };
+            ColumnDefinition column1 = new ColumnDefinition
+            {
+                Width = new GridLength(100)
+            };
+            ColumnDefinition column2 = new ColumnDefinition
+            {
+                Width = new GridLength(1, GridUnitType.Star)
+            };
+            grid.ColumnDefinitions.Add(column1);
+            grid.ColumnDefinitions.Add(column2);
+            RowDefinition row1 = new RowDefinition
+            {
+                Height = new GridLength(1, GridUnitType.Star)
+            };
+            RowDefinition row2 = new RowDefinition
+            {
+                Height = new GridLength(3, GridUnitType.Star)
+            };
+            grid.RowDefinitions.Add(row1);
+            grid.RowDefinitions.Add(row2);
+
+            Button button1 = new Button { Content = "Play" };
+            Grid.SetColumn(button1, 0);
+            Grid.SetRow(button1, 0);
+
+            Image imageView = new Image { Source = image };
+            Grid.SetColumn(imageView, 1);
+            Grid.SetRow(imageView, 0);
+
+            Grid innerGrid = new Grid();
+            innerGrid.RowDefinitions.Add(new RowDefinition());
+            innerGrid.RowDefinitions.Add(new RowDefinition());
+            Button button2 = new Button { Content = "Play" };
+            Button button3 = new Button { Content = "Remove all" };
+            Grid.SetRow(button2, 0);
+            Grid.SetRow(button3, 1);
+            innerGrid.Children.Add(button2);
+            innerGrid.Children.Add(button3);
+            Grid.SetColumn(innerGrid, 0);
+            Grid.SetRow(innerGrid, 1);
+
+            ScrollViewer scrollViewer = new ScrollViewer 
+            { 
+                VerticalScrollBarVisibility = ScrollBarVisibility.Disabled,
+                HorizontalScrollBarVisibility = ScrollBarVisibility.Auto
+            };
+            StackPanel stackPanel = new StackPanel
+            {
+                Orientation = Orientation.Horizontal
+            };
+            stackPanel.Drop += CodeBlocksPlacement_Drop;
+            stackPanel.AllowDrop = true;
+            Grid.SetColumn(scrollViewer, 1);
+            Grid.SetRow(scrollViewer, 1);
+            scrollViewer.Content = stackPanel;
+
+            Border border = new Border
+            {
+                AllowDrop = true,
+                Width = 100,
+                Margin = new Thickness(5),
+                BorderBrush = Brushes.Gray,
+                BorderThickness = new Thickness(2),
+                Background = Brushes.Transparent
+            };
+            border.Drop += CodeBlocksPlacement_Drop;
+            TextBlock textBlock = new TextBlock 
+            {
+                FontWeight = FontWeights.Bold,
+                FontSize = 16,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center,
+                Text = "+"
+            };
+            stackPanel.Children.Add(border);
+            border.Child = textBlock;
+
+            grid.Children.Add(button1);
+            grid.Children.Add(imageView);
+            grid.Children.Add(innerGrid);
+            grid.Children.Add(scrollViewer);
+
+            mainPanel.Children.Add(grid);
+        }
+
+        private void StackPanel_Drop(object sender, DragEventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         private void CodeBlocksPanel_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -70,7 +245,7 @@ namespace app
 
         internal void CodeBlock_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            codeBlocksPlacement.Children.Remove(selected);
+            // codeBlocksPlacement.Children.Remove(selected);
             selected = null;
         }
 
@@ -115,8 +290,8 @@ namespace app
                         border.MouseRightButtonDown += CodeBlock_MouseRightButtonDown;
                     }
                 }
-                
-                codeBlocksPlacement.Children.Insert(codeBlocksPlacement.Children.Count - 1, newCodeBlock);
+                StackPanel stackPanel = (StackPanel)(sender as Border).Parent;
+                stackPanel.Children.Insert(stackPanel.Children.Count - 1, newCodeBlock);
                 
                 e.Handled = true;
             }
@@ -124,7 +299,7 @@ namespace app
 
         private void DeleteAll_Click(object sender, RoutedEventArgs e)
         {
-            codeBlocksPlacement.Children.Clear();
+            // codeBlocksPlacement.Children.Clear();
         }
     }
 }
