@@ -1,4 +1,5 @@
 ﻿using app.Components;
+using app.Model;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
@@ -20,6 +21,8 @@ namespace app
 
         private readonly double clickDelay = 200;
         private DateTime lastClickTime = DateTime.MinValue;
+
+        private List<MusicBlock> blocks = new List<MusicBlock>();
 
         public MainWindow()
         {
@@ -101,7 +104,6 @@ namespace app
                             bitmap.StreamSource = ms;
                             bitmap.CacheOption = BitmapCacheOption.OnLoad;
                             bitmap.EndInit();
-                            //bitmap.Freeze();
                         }
                         AddRowToMainPanel(directory, bitmap);
                     }
@@ -253,44 +255,70 @@ namespace app
         {
             if (e.Data.GetData(typeof(Border)) is Border codeBlock)
             {
-                dynamic newCodeBlock;
+                var senderBlock = (sender as Border).Tag as MusicBlock;
 
-                if (codeBlock == loopCodeBlock)
+                // first case: drop on loop-block
+                if (true)
                 {
-                    newCodeBlock = new NestedCodeBlock
-                    {
-                        Width = 140,
-                        Height = codeBlock.Height,
-                        Type = "Loop",
-                        Count = "5",
-                        LoopCodeBlock = loopCodeBlock
-                    };
+                    // add to loop block
                 }
-                else
+                
+                
+                MusicBlock newMusicBlock = null;
+
+                var type = codeBlock.Tag as string;
+
+                switch (type)
                 {
-                    newCodeBlock = new Border
-                    {
-                        Width = 70,
-                        Height = codeBlock.Height,
-                        Background = codeBlock.Background,
-                        Child = new TextBlock
+                    case "Note":
+                        newMusicBlock = new NoteBlock
                         {
-                            Text = (codeBlock.Child as TextBlock)?.Text,
-                            FontSize = (codeBlock.Child as TextBlock)?.FontSize ?? 12,
-                            FontWeight = (codeBlock.Child as TextBlock)?.FontWeight ?? FontWeights.Normal,
-                            HorizontalAlignment = (codeBlock.Child as TextBlock)?.HorizontalAlignment ?? HorizontalAlignment.Left,
-                            VerticalAlignment = (codeBlock.Child as TextBlock)?.VerticalAlignment ?? VerticalAlignment.Top
-                        }
-                    };
-
-                    if (newCodeBlock is Border border)
-                    {
-                        border.Focusable = true;
-                        border.MouseLeftButtonDown += CodeBlock_MouseLeftButtonDown;
-                        border.MouseRightButtonDown += CodeBlock_MouseRightButtonDown;
-                    }
+                            Pitch = 60,
+                            Velocity = 100,
+                            Duration = 1
+                        };
+                        break;
+                    case "Chord":
+                        newMusicBlock = new ChordBlock
+                        {
+                            Notes = new List<NoteBlock>()
+                        };
+                        break;
+                    case "Loop":
+                        newMusicBlock = new LoopBlock
+                        {
+                            Blocks = new List<MusicBlock>(),
+                            RepeatCount = 5
+                        };
+                        break;
+                    default:
+                        throw new Exception("Unknown type: " + type);
                 }
-                StackPanel stackPanel = (StackPanel)(sender as Border).Parent;
+
+
+
+                var newCodeBlock = new Border
+                {
+                    Width = 70,
+                    Height = 70,
+                    Background = codeBlock.Background,
+                    Child = new TextBlock
+                    {
+                        Text = (codeBlock.Child as TextBlock)?.Text,
+                        FontSize = (codeBlock.Child as TextBlock)?.FontSize ?? 12,
+                        FontWeight = (codeBlock.Child as TextBlock)?.FontWeight ?? FontWeights.Normal,
+                        HorizontalAlignment = (codeBlock.Child as TextBlock)?.HorizontalAlignment ?? HorizontalAlignment.Left,
+                        VerticalAlignment = (codeBlock.Child as TextBlock)?.VerticalAlignment ?? VerticalAlignment.Top
+                    }
+                };
+
+                blocks.Add(newMusicBlock);
+
+                newCodeBlock.Focusable = true;
+                newCodeBlock.MouseLeftButtonDown += CodeBlock_MouseLeftButtonDown;
+                newCodeBlock.MouseRightButtonDown += CodeBlock_MouseRightButtonDown;
+                
+                var stackPanel = (StackPanel)(sender as Border).Parent;
                 stackPanel.Children.Insert(stackPanel.Children.Count - 1, newCodeBlock);
                 
                 e.Handled = true;
