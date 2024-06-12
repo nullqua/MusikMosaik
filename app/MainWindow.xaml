@@ -54,16 +54,16 @@
                         <Setter Property="VerticalAlignment" Value="Center"/>
                     </Style>
                 </StackPanel.Resources>
-                <Border x:Name="loopCodeBlock" Height="70" Background="Red">
+                <Border Tag="Loop" Height="70" Background="Red">
                     <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">↺</TextBlock>
                 </Border>
-                <Border Height="70" Background="Cyan">
+                <Border Tag="Note" Height="70" Background="Cyan">
                     <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">♩</TextBlock>
                 </Border>
-                <Border Height="70" Background="Yellow">
+                <Border Tag="Chord" Height="70" Background="Yellow">
                     <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">♩ ♩ ♩</TextBlock>
                 </Border>
-                <Border Height="70" Background="Magenta">
+                <Border Tag="Function" Height="70" Background="Magenta">
                     <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">fx</TextBlock>
                 </Border>
             </StackPanel>
