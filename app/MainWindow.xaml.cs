@@ -166,7 +166,8 @@ namespace app
             };
             StackPanel stackPanel = new StackPanel
             {
-                Orientation = Orientation.Horizontal
+                Orientation = Orientation.Horizontal,
+                MinHeight = 70
             };
             stackPanel.Drop += CodeBlocksPlacement_Drop;
             stackPanel.AllowDrop = true;
@@ -223,7 +224,10 @@ namespace app
 
             if (timeSinceLastClick.TotalMilliseconds <= clickDelay)
             {
-                throw new NotImplementedException();
+                var res = blocks.Find(x => x.id == (Guid)(sender as Border).Tag);
+                var optionWindow = new CodeBlockOptionWindow(res);
+                optionWindow.ShowDialog();
+
             }
             else
             {

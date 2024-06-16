@@ -7,11 +7,17 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="CodeBlockOptionWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Components\NestedCodeBlock.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Page Update="CodeBlockOptionWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Components\NestedCodeBlock.xaml">
       <SubType>Designer</SubType>
     </Page>
