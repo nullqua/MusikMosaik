@@ -220,6 +220,7 @@ namespace app
 
         private void ScorePlay_Click(object sender, RoutedEventArgs e)
         {
+            foreach()
             MessageBox.Show("Playing song");
         }
 

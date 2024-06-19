@@ -13,8 +13,8 @@ using System.Collections.ObjectModel;
 
 public class MidiBuilder
 {
-    MidiFile midiFile;
-    PatternBuilder patternBuilder;
+    private MidiFile midiFile;
+    private PatternBuilder patternBuilder;
 
     public MidiBuilder(){
         patternBuilder = new PatternBuilder();
@@ -34,14 +34,18 @@ public class MidiBuilder
         }
         patternBuilder.Chord(notes, musicalTimeSpan);
     }
+    public void Repeat(int actionsCount, int repeat)
+    {
+        patternBuilder.Repeat(actionsCount, repeat);
+    }
 
-    public MidiFile buildMidi(string midiName, PatternBuilder patternBuilder, short bpm)
+    public string buildMidi(string midiName, short bpm)
     {
         
         var pattern = patternBuilder.Build();
         var midiFile = pattern.ToFile(TempoMap.Create(new TicksPerQuarterNoteTimeDivision(480), Tempo.FromBeatsPerMinute(bpm)));
         midiFile.Write(midiName + ".mid", overwriteFile: true);
-        return midiFile;
+        return midiName + ".mid";
     }
 
 
