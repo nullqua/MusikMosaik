@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Diagnostics;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace app.Components
@@ -13,28 +14,13 @@ namespace app.Components
             InitializeComponent();
         }
 
-        public static readonly DependencyProperty TypeProperty = DependencyProperty.Register(
-            "Type", typeof(string), typeof(NestedCodeBlock), new PropertyMetadata(default(string)));
-
         public static readonly DependencyProperty CountProperty = DependencyProperty.Register(
             "Count", typeof(string), typeof(NestedCodeBlock), new PropertyMetadata(default(string)));
 
-        public static readonly DependencyProperty LoopCodeBlockProperty = DependencyProperty.Register(
-            "LoopCodeBlock", typeof(Border), typeof(NestedCodeBlock), new PropertyMetadata(default(Border)));
-
-        public Border LoopCodeBlock
-        {
-            get => (Border)GetValue(LoopCodeBlockProperty);
-            set => SetValue(LoopCodeBlockProperty, value);
-        }
+        public static readonly DependencyProperty IdProperty = DependencyProperty.Register(
+            "Id", typeof(Guid), typeof(NestedCodeBlock), new PropertyMetadata(default(Guid)));
 
         public StackPanel CodeBlockContainer => container;
-
-        public string Type
-        {
-            get => (string)GetValue(TypeProperty);
-            set => SetValue(TypeProperty, value);
-        }
 
         public string Count
         {
@@ -42,9 +28,17 @@ namespace app.Components
             set => SetValue(CountProperty, value);
         }
 
+        public Guid Id
+        {
+            get => (Guid)GetValue(IdProperty);
+            set => SetValue(IdProperty, value);
+        }
+        
         private void Container_Drop(object sender, DragEventArgs e)
         {
-            if (e.Data.GetData(typeof(Border)) == LoopCodeBlock)
+            Debug.WriteLine((e.Data.GetData(typeof(Border)) as Border).Tag);
+
+            if ((e.Data.GetData(typeof(Border)) as Border).Tag.Equals("Loop"))
             {
                 MessageBox.Show("Geschachtelte Schleifen sind nicht erlaubt.", "Fehler");
                 e.Handled = true;

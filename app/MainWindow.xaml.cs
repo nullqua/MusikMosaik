@@ -1,5 +1,6 @@
 ﻿using app.Components;
 using app.Model;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
@@ -165,7 +166,8 @@ namespace app
             };
             StackPanel stackPanel = new StackPanel
             {
-                Orientation = Orientation.Horizontal
+                Orientation = Orientation.Horizontal,
+                MinHeight = 70
             };
             stackPanel.Drop += CodeBlocksPlacement_Drop;
             stackPanel.AllowDrop = true;
@@ -222,7 +224,10 @@ namespace app
 
             if (timeSinceLastClick.TotalMilliseconds <= clickDelay)
             {
-                throw new NotImplementedException();
+                var res = blocks.Find(x => x.id == (Guid)(sender as Border).Tag);
+                var optionWindow = new CodeBlockOptionWindow(res);
+                optionWindow.ShowDialog();
+
             }
             else
             {
@@ -251,21 +256,15 @@ namespace app
             selected = null;
         }
 
-        private void CodeBlocksPlacement_Drop(object sender, DragEventArgs e)
+        internal void CodeBlocksPlacement_Drop(object sender, DragEventArgs e)
         {
             if (e.Data.GetData(typeof(Border)) is Border codeBlock)
             {
                 var senderBlock = (sender as Border).Tag as MusicBlock;
 
-                // first case: drop on loop-block
-                if (true)
-                {
-                    // add to loop block
-                }
-                
-                
                 MusicBlock newMusicBlock = null;
-
+                
+                var guid = Guid.NewGuid();
                 var type = codeBlock.Tag as string;
 
                 switch (type)
@@ -273,6 +272,7 @@ namespace app
                     case "Note":
                         newMusicBlock = new NoteBlock
                         {
+                            id = guid,
                             Pitch = 60,
                             Velocity = 100,
                             Duration = 1
@@ -281,12 +281,14 @@ namespace app
                     case "Chord":
                         newMusicBlock = new ChordBlock
                         {
+                            id = guid,
                             Notes = new List<NoteBlock>()
                         };
                         break;
                     case "Loop":
                         newMusicBlock = new LoopBlock
                         {
+                            id = guid,
                             Blocks = new List<MusicBlock>(),
                             RepeatCount = 5
                         };
@@ -295,39 +297,59 @@ namespace app
                         throw new Exception("Unknown type: " + type);
                 }
 
-
-
-                var newCodeBlock = new Border
+                if (type == "Loop")
                 {
-                    Width = 70,
-                    Height = 70,
-                    Background = codeBlock.Background,
-                    Child = new TextBlock
+                    var newCodeBlock = new NestedCodeBlock
                     {
-                        Text = (codeBlock.Child as TextBlock)?.Text,
-                        FontSize = (codeBlock.Child as TextBlock)?.FontSize ?? 12,
-                        FontWeight = (codeBlock.Child as TextBlock)?.FontWeight ?? FontWeights.Normal,
-                        HorizontalAlignment = (codeBlock.Child as TextBlock)?.HorizontalAlignment ?? HorizontalAlignment.Left,
-                        VerticalAlignment = (codeBlock.Child as TextBlock)?.VerticalAlignment ?? VerticalAlignment.Top
+                        Width = 140,
+                        Height = codeBlock.Height,
+                        Count = "5",
+                        Id = guid
+                    };
+
+                    blocks.Add(newMusicBlock);
+
+                    var stackPanel = (sender as Border).Parent as StackPanel;
+                    stackPanel.Children.Insert(stackPanel.Children.Count - 1, newCodeBlock);
+                }
+                else
+                {
+                    if (senderBlock is not LoopBlock)
+                    {
+                        var newCodeBlock = new Border
+                        {
+                            Width = 70,
+                            Height = 70,
+                            Background = codeBlock.Background,
+                            Child = new TextBlock
+                            {
+                                Text = (codeBlock.Child as TextBlock)?.Text,
+                                FontSize = (codeBlock.Child as TextBlock)?.FontSize ?? 12,
+                                FontWeight = (codeBlock.Child as TextBlock)?.FontWeight ?? FontWeights.Normal,
+                                HorizontalAlignment = (codeBlock.Child as TextBlock)?.HorizontalAlignment ?? HorizontalAlignment.Left,
+                                VerticalAlignment = (codeBlock.Child as TextBlock)?.VerticalAlignment ?? VerticalAlignment.Top
+                            },
+                            Tag = guid
+                        };
+
+                        blocks.Add(newMusicBlock);
+
+                        newCodeBlock.Focusable = true;
+                        newCodeBlock.MouseLeftButtonDown += CodeBlock_MouseLeftButtonDown;
+                        newCodeBlock.MouseRightButtonDown += CodeBlock_MouseRightButtonDown;
+
+                        var stackPanel = (sender as Border).Parent as StackPanel;
+                        stackPanel.Children.Insert(stackPanel.Children.Count - 1, newCodeBlock);
                     }
-                };
+                }
 
-                blocks.Add(newMusicBlock);
-
-                newCodeBlock.Focusable = true;
-                newCodeBlock.MouseLeftButtonDown += CodeBlock_MouseLeftButtonDown;
-                newCodeBlock.MouseRightButtonDown += CodeBlock_MouseRightButtonDown;
-                
-                var stackPanel = (StackPanel)(sender as Border).Parent;
-                stackPanel.Children.Insert(stackPanel.Children.Count - 1, newCodeBlock);
-                
                 e.Handled = true;
             }
         }
 
         private void DeleteAll_Click(object sender, RoutedEventArgs e)
         {
-            // codeBlocksPlacement.Children.Clear();
+            
         }
     }
 }
