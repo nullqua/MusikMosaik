@@ -1,5 +1,6 @@
 ﻿using app.Components;
 using app.Model;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -22,6 +23,8 @@ namespace app
 
         private readonly double clickDelay = 200;
         private DateTime lastClickTime = DateTime.MinValue;
+
+        private JObject metadata;
 
         private List<MusicBlock> blocks = new List<MusicBlock>();
 
@@ -76,11 +79,19 @@ namespace app
         {
             using (ZipArchive archive = ZipFile.OpenRead(filePath))
             {
-                Debug.WriteLine("Opened file");
-                
-                foreach (var entry in archive.Entries)
+                var metadataEntry = archive.Entries.FirstOrDefault(e => e.FullName == "metadata.json");
+                if (metadataEntry != null)
                 {
-                    Debug.WriteLine(entry.FullName);
+                    using (Stream stream = metadataEntry.Open())
+                    {
+                        using (StreamReader reader = new StreamReader(stream))
+                        {
+                            string json = reader.ReadToEnd();
+
+                            metadata = JObject.Parse(json);
+                            Debug.WriteLine(metadata);
+                        }
+                    }
                 }
 
                 var sectionDireories = archive.Entries
@@ -88,6 +99,7 @@ namespace app
                     .Select(e => e.FullName.Split('/')[1])
                     .Distinct()
                     .ToList();
+
 
                 foreach (var directory in sectionDireories)
                 {
