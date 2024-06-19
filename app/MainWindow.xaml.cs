@@ -142,6 +142,7 @@ namespace app
             Button button1 = new Button { Content = "Play" };
             Grid.SetColumn(button1, 0);
             Grid.SetRow(button1, 0);
+            button1.Click += ScorePlay_Click;
 
             Image imageView = new Image { Source = image };
             Grid.SetColumn(imageView, 1);
@@ -158,6 +159,7 @@ namespace app
             innerGrid.Children.Add(button3);
             Grid.SetColumn(innerGrid, 0);
             Grid.SetRow(innerGrid, 1);
+            button2.Click += CodeBlockPlay_Click;
 
             ScrollViewer scrollViewer = new ScrollViewer 
             { 
@@ -202,6 +204,16 @@ namespace app
             grid.Children.Add(scrollViewer);
 
             mainPanel.Children.Add(grid);
+        }
+
+        private void ScorePlay_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Playing song");
+        }
+
+        private void CodeBlockPlay_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Playing code block");
         }
 
         private void StackPanel_Drop(object sender, DragEventArgs e)
