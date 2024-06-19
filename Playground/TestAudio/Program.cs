@@ -5,8 +5,8 @@ class Program
     static void Main()
     {
         //MididateiFunktionen.MididateiAbspielen("Some great song.mid", "TimGM6mb.sf2");
-        SchreibeMidi.erstellespezifischMidi("CRepat");
-        MididateiFunktionen.MididateiAuslesen("CRepat.mid");
+        SchreibeMidi.erstellespezifischMidi("AkkordTest");
+        MididateiFunktionen.MididateiAuslesen("akkord_with_instrument.mid");
         
     }
 }

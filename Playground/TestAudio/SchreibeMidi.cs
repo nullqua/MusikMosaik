@@ -5,9 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Melanchall.DryWetMidi.Composing;
 using Melanchall.DryWetMidi.Core;
-using Melanchall.DryWetMidi.Interaction;
 using Melanchall.DryWetMidi.MusicTheory;
 using NAudio.Wave;
 using Melanchall.DryWetMidi.Common;
@@ -18,14 +16,10 @@ public class SchreibeMidi
     public static string erstellespezifischMidi(string midiname)
     {
         var midiFile = new MidiFile();
-        var pattern = new PatternBuilder()
-        //.SetNoteLength(new MusicalTimeSpan(1,4,true))
-        //.SetNoteLength(MusicalTimeSpan.Quarter)
-        .SetVelocity((SevenBitNumber)100)
-        .Note("C3", MusicalTimeSpan.Quarter)
-        .Repeat(1,10)
-        .Build();
-
+        var patternBuilder = new PatternBuilder();
+        addChord(new string[] { "C4", "E4", "G4", "B4" }, new MusicalTimeSpan(1,1), patternBuilder);
+        patternBuilder.Repeat(10);
+        var pattern = patternBuilder.Build();
         midiFile = pattern.ToFile(TempoMap.Create(new TicksPerQuarterNoteTimeDivision(480), Tempo.FromBeatsPerMinute(60)));
 
         midiFile.Write(midiname+ ".mid", overwriteFile: true);
@@ -55,21 +49,30 @@ public class SchreibeMidi
     {
         var midiFile = new MidiFile();
         var pattern = patternBuilder.Build();
-        midiFile = pattern.ToFile(TempoMap.Create(Tempo.FromBeatsPerMinute(bpm)));
-        midiFile.TimeDivision = new TicksPerQuarterNoteTimeDivision(bpm);
+        midiFile = pattern.ToFile(TempoMap.Create(new TicksPerQuarterNoteTimeDivision(480), Tempo.FromBeatsPerMinute(bpm)));
         midiFile.Write(midiName + ".mid", overwriteFile: true);
         return midiFile;
     }
-    public static PatternBuilder newPatternBuild(string pattern) 
+    public static PatternBuilder newPatternBuild() 
     { 
         return new PatternBuilder();
     }
-    public static PatternBuilder addNoteToPattern(PatternBuilder patternBuilder, string note, int notenlange)
+    public static PatternBuilder addNoteToPattern(PatternBuilder patternBuilder, string note, int beatNumerator, int beatdenumerator)
     {
-        patternBuilder.SetNoteLength(new MidiTimeSpan());
-        patternBuilder.Note(note);
-        
+        patternBuilder.Note(note, new MusicalTimeSpan(beatNumerator, beatdenumerator));
+
+
         return patternBuilder;
+    }
+    public static PatternBuilder addChord(string[] noteNames, MusicalTimeSpan musicalTimeSpan, PatternBuilder patternBuilder)
+    {
+        List<Melanchall.DryWetMidi.MusicTheory.Note> notes = new List<Melanchall.DryWetMidi.MusicTheory.Note>();
+        for (int i = 0; i < noteNames.Length; i++)
+        {
+            //Melanchall.DryWetMidi.MusicTheory.Note note = Melanchall.DryWetMidi.MusicTheory.Note.Parse(noteNames[i]);
+            notes.Add(Melanchall.DryWetMidi.MusicTheory.Note.Parse(noteNames[i]));
+        }
+        return patternBuilder.Chord(notes, musicalTimeSpan);
     }
 
 

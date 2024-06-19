@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\wolfg\\Musikinformatik\\musikinformatik\\Playground\\TestAudio\\TestAudio.csproj": {}
+    "C:\\Users\\Admin\\source\\repos\\Playground\\TestAudio\\TestAudio.csproj": {}
   },
   "projects": {
-    "C:\\Users\\wolfg\\Musikinformatik\\musikinformatik\\Playground\\TestAudio\\TestAudio.csproj": {
+    "C:\\Users\\Admin\\source\\repos\\Playground\\TestAudio\\TestAudio.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\wolfg\\Musikinformatik\\musikinformatik\\Playground\\TestAudio\\TestAudio.csproj",
+        "projectUniqueName": "C:\\Users\\Admin\\source\\repos\\Playground\\TestAudio\\TestAudio.csproj",
         "projectName": "TestAudio",
-        "projectPath": "C:\\Users\\wolfg\\Musikinformatik\\musikinformatik\\Playground\\TestAudio\\TestAudio.csproj",
-        "packagesPath": "C:\\Users\\wolfg\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\wolfg\\Musikinformatik\\musikinformatik\\Playground\\TestAudio\\obj\\",
+        "projectPath": "C:\\Users\\Admin\\source\\repos\\Playground\\TestAudio\\TestAudio.csproj",
+        "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Admin\\source\\repos\\Playground\\TestAudio\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\wolfg\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -74,7 +74,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.300/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
