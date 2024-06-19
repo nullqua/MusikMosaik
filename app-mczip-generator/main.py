@@ -1,4 +1,5 @@
 import argparse
+import json
 import math
 import subprocess
 import tempfile
@@ -117,11 +118,23 @@ def create_png(section, path):
     crop_image(path)
 
 
+def create_metadata(temp_path, measures_per_line, bpm, time_signature):
+    data = {
+        "measures_per_line": measures_per_line,
+        "bpm": bpm,
+        "time_signature": time_signature
+    }
+
+    with open(temp_path / 'metadata.json', 'w') as f:
+        json.dump(data, f)
+
+
 def create_archive(temp_path, output_path):
     excluded_files = ['converted.ly', 'converted.png', 'script.ly']
 
     with zipfile.ZipFile(output_path.with_suffix('.mczip'), 'w') as zipf:
         zipf.write(temp_path / 'score.mid', 'score.midi')
+        zipf.write(temp_path / 'metadata.json', 'metadata.json')
         for file_path in temp_path.glob('sections/**/*'):
             if file_path.name in excluded_files:
                 continue
@@ -159,6 +172,9 @@ def main():
 
     sections = process_section(orig, args.measures_per_line)
 
+    bpm = orig.metronomeMarkBoundaries()[0][2].number
+    time_signature = orig.getTimeSignatures()[0].ratioString
+
     with tempfile.TemporaryDirectory() as temp_path:
         temp_path = Path(temp_path)
         orig.write('midi', fp=f'{temp_path}\\score.mid')
@@ -172,6 +188,7 @@ def main():
             section.write('midi', fp=section_path / 'score.mid')
             create_png(section, section_path)
 
+        create_metadata(temp_path, args.measures_per_line, bpm, time_signature)
         create_archive(temp_path, args.output_path)
 
 
