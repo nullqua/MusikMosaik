@@ -17,8 +17,11 @@ public class SchreibeMidi
     {
         var midiFile = new MidiFile();
         var patternBuilder = new PatternBuilder();
-        addChord(new string[] { "C4", "E4", "G4", "B4" }, new MusicalTimeSpan(1,1), patternBuilder);
-        patternBuilder.Repeat(10);
+        addChord(new string[] { "C3", "C4", "E4", "G5" }, new MusicalTimeSpan(1, 4), patternBuilder);
+        addChord(new string[] { "F3", "C4", "F4", "A4" }, new MusicalTimeSpan(1, 4), patternBuilder);
+        addChord(new string[] { "G3", "B3", "D4", "G4" }, new MusicalTimeSpan(1, 4), patternBuilder);
+        addChord(new string[] { "C3", "C4", "E4", "G4" }, new MusicalTimeSpan(1, 4), patternBuilder);
+        patternBuilder.Repeat(2,5);
         var pattern = patternBuilder.Build();
         midiFile = pattern.ToFile(TempoMap.Create(new TicksPerQuarterNoteTimeDivision(480), Tempo.FromBeatsPerMinute(60)));
 

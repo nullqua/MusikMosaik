@@ -11,5 +11,7 @@ namespace app.Model
         public int Pitch { get; set; }
         public int Velocity { get; set; }
         public int Duration { get; set; }
+
+        public string Notename { get; set; }
     }
 }
