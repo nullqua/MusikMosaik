@@ -220,7 +220,40 @@ namespace app
 
         private void ScorePlay_Click(object sender, RoutedEventArgs e)
         {
-            foreach()
+            foreach(MusicBlock musicBlock in blocks)
+            {
+                if (musicBlock != null)
+                {
+                    throw new Exception("MusicBlock is Leer");
+                }
+                else
+                {
+                    MidiBuilder midiBuilder = new MidiBuilder();
+                    if (musicBlock is NoteBlock)
+                    {
+                        string notename = ((NoteBlock)musicBlock).Notename;
+                        string pitch = $"{((NoteBlock)musicBlock).Pitch}";
+
+
+                        midiBuilder.addNote(notename + pitch, );
+                    }
+                    else if (musicBlock is ChordBlock)
+                    {
+
+                    }
+                    else if (musicBlock is LoopBlock)
+                    {
+
+                    }
+                    else if (musicBlock is MusicBlock)
+                    {
+
+                    }
+                    else
+                    {
+                        throw new Exception("Unknown type: " + musicBlock.GetType);
+                    }
+                }
             MessageBox.Show("Playing song");
         }
 

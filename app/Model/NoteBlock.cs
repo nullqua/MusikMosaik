@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Melanchall.DryWetMidi.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,8 +11,9 @@ namespace app.Model
     {
         public int Pitch { get; set; }
         public int Velocity { get; set; }
-        public int Duration { get; set; }
+        public int DurationNominator { get; set; }
 
         public string Notename { get; set; }
+        public string Note = Notename + Pitch.toString();
     }
 }
