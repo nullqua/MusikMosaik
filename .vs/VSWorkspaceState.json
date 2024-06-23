@@ -1,7 +1,11 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\app",
+    "\\app\\Model",
+    "\\Playground",
+    "\\Playground\\TestAudio"
   ],
-  "SelectedNode": "\\Playground.sln",
+  "SelectedNode": "\\app\\Model\\NoteBlock.cs",
   "PreviewInSolutionExplorer": false
 }

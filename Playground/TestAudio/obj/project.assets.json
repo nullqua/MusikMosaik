@@ -553,19 +553,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Admin\\.nuget\\packages\\": {}
+    "C:\\Users\\wolfg\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Admin\\source\\repos\\Playground\\TestAudio\\TestAudio.csproj",
+      "projectUniqueName": "C:\\Users\\wolfg\\source\\repos\\musikinformatik\\Playground\\TestAudio\\TestAudio.csproj",
       "projectName": "TestAudio",
-      "projectPath": "C:\\Users\\Admin\\source\\repos\\Playground\\TestAudio\\TestAudio.csproj",
-      "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Admin\\source\\repos\\Playground\\TestAudio\\obj\\",
+      "projectPath": "C:\\Users\\wolfg\\source\\repos\\musikinformatik\\Playground\\TestAudio\\TestAudio.csproj",
+      "packagesPath": "C:\\Users\\wolfg\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\wolfg\\source\\repos\\musikinformatik\\Playground\\TestAudio\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\wolfg\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

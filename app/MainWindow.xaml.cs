@@ -231,11 +231,8 @@ namespace app
                     MidiBuilder midiBuilder = new MidiBuilder();
                     if (musicBlock is NoteBlock)
                     {
-                        string notename = ((NoteBlock)musicBlock).Notename;
-                        string pitch = $"{((NoteBlock)musicBlock).Pitch}";
-
-
-                        midiBuilder.addNote(notename + pitch, );
+                        NoteBlock noteBlock = (NoteBlock)musicBlock;
+                        midiBuilder.addNote(noteBlock.notename, noteBlock.musicalTimeSpan);
                     }
                     else if (musicBlock is ChordBlock)
                     {

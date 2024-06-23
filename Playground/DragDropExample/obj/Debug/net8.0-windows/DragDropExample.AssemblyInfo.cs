@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("DragDropExample")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+99e0510fc7055f8865c55cc3b868338e2d2c4bd5")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+174abe4357bf815ca7711f9378d172e5f8dcc31d")]
 [assembly: System.Reflection.AssemblyProductAttribute("DragDropExample")]
 [assembly: System.Reflection.AssemblyTitleAttribute("DragDropExample")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

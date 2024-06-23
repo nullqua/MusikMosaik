@@ -15,7 +15,7 @@ public class SchreibeMidi
 {
     public static string erstellespezifischMidi(string midiname)
     {
-        var MidiFile = new MidiFile();
+        MidiFile midiFile = new MidiFile();
         var patternBuilder = new PatternBuilder();
         addChord(new string[] { "C3", "C4", "E4", "G5" }, new MusicalTimeSpan(1, 4), patternBuilder);
         addChord(new string[] { "F3", "C4", "F4", "A4" }, new MusicalTimeSpan(1, 4), patternBuilder);
