@@ -15,13 +15,12 @@ namespace app.Model
         public string Basstone;
         public string Overtone;
         public int Pitch;
-        public string[] AllNotes = new string[]
-        {
+        private string[] AllNotes = {
             "C", "CSharp", "D", "DSharp", "E", "F", "FSharp", "G", "GSharp", "A", "ASharp", "H"
         };
         string Mode;
         public string[] notenames;
-        ChordBlock(Guid id,string basstone, string overtone, int pitch, string mode, int timenumerator, int timedenominatorint,int velocity)
+        public ChordBlock(Guid id,string basstone, string overtone, int pitch, string mode, int timenumerator, int timedenominatorint,int velocity)
         {
             Id = id;
             this.Basstone = basstone;
@@ -32,6 +31,7 @@ namespace app.Model
             this.Velocity = velocity;
 
         }
+
         private void FillNotenames()
         {
             int BasstoneInt = int.MaxValue;
@@ -62,7 +62,7 @@ namespace app.Model
             {
                 throw new Exception("Mode wrong falue different to Major/Minor");
             }
-            notenames
+            //notenames 
         }
     }
 }
