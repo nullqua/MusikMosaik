@@ -9,6 +9,6 @@
     <DockPanel>
         <TextBlock FontWeight="Medium" FontSize="18" DockPanel.Dock="Top">Code Block</TextBlock>
         <StackPanel x:Name="panel"></StackPanel>
-        <Button DockPanel.Dock="Bottom">Fertig</Button>
+        <Button Margin="0 10 0 0" DockPanel.Dock="Bottom">Fertig</Button>
     </DockPanel>
 </Window>

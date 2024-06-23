@@ -220,37 +220,37 @@ namespace app
 
         private void ScorePlay_Click(object sender, RoutedEventArgs e)
         {
-            foreach(MusicBlock musicBlock in blocks)
-            {
-                if (musicBlock != null)
-                {
-                    throw new Exception("MusicBlock is Leer");
-                }
-                else
-                {
-                    MidiBuilder midiBuilder = new MidiBuilder();
-                    if (musicBlock is NoteBlock)
-                    {
-                        NoteBlock noteBlock = (NoteBlock)musicBlock;
-                        midiBuilder.addNote(noteBlock.Notename, noteBlock.MusicalTimeSpan);
-                    }
-                    else if (musicBlock is ChordBlock)
-                    {
+            //foreach(MusicBlock musicBlock in blocks)
+            //{
+            //    if (musicBlock != null)
+            //    {
+            //        throw new Exception("MusicBlock is Leer");
+            //    }
+            //    else
+            //    {
+            //        MidiBuilder midiBuilder = new MidiBuilder();
+            //        if (musicBlock is NoteBlock)
+            //        {
+            //            NoteBlock noteBlock = (NoteBlock)musicBlock;
+            //            midiBuilder.addNote(noteBlock.Notename, noteBlock.MusicalTimeSpan);
+            //        }
+            //        else if (musicBlock is ChordBlock)
+            //        {
 
-                    }
-                    else if (musicBlock is LoopBlock)
-                    {
+            //        }
+            //        else if (musicBlock is LoopBlock)
+            //        {
 
-                    }
-                    else if (musicBlock is MusicBlock)
-                    {
+            //        }
+            //        else if (musicBlock is MusicBlock)
+            //        {
 
-                    }
-                    else
-                    {
-                        throw new Exception("Unknown type: " + musicBlock.GetType);
-                    }
-                }
+            //        }
+            //        else
+            //        {
+            //            throw new Exception("Unknown type: " + musicBlock.GetType);
+            //        }
+            //    }
             MessageBox.Show("Playing song");
         }
 
@@ -325,20 +325,10 @@ namespace app
                 switch (type)
                 {
                     case "Note":
-                        newMusicBlock = new NoteBlock
-                        {
-                            id = guid,
-                            Pitch = 60,
-                            Velocity = 100,
-                            Duration = 1
-                        };
+                        newMusicBlock = new NoteBlock(guid, "c", 60, 1, 4, 100);
                         break;
                     case "Chord":
-                        newMusicBlock = new ChordBlock
-                        {
-                            id = guid,
-                            Notes = new List<NoteBlock>()
-                        };
+                        newMusicBlock = new ChordBlock(guid, "c", "h", 60, "major", 1, 4, 100);
                         break;
                     case "Loop":
                         newMusicBlock = new LoopBlock
