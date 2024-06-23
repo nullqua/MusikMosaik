@@ -232,7 +232,7 @@ namespace app
                     if (musicBlock is NoteBlock)
                     {
                         NoteBlock noteBlock = (NoteBlock)musicBlock;
-                        midiBuilder.addNote(noteBlock.notename, noteBlock.musicalTimeSpan);
+                        midiBuilder.addNote(noteBlock.Notename, noteBlock.MusicalTimeSpan);
                     }
                     else if (musicBlock is ChordBlock)
                     {

@@ -8,6 +8,6 @@ namespace app.Model
 {
     public abstract class MusicBlock
     {
-        public Guid id { get; set; }
+        public Guid Id { get; set; }
     }
 }
