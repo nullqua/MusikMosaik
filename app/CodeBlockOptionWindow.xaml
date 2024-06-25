@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:app"
         mc:Ignorable="d"
         Title="CodeBlock Optionen" Height="300" Width="300" ResizeMode="NoResize">
-    <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
         <StackPanel>
             <StackPanel x:Name="panel" Orientation="Vertical"></StackPanel>
             <Button Height="30">Fertig</Button>
