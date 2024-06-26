@@ -279,7 +279,8 @@ namespace app
 
             if (timeSinceLastClick.TotalMilliseconds <= clickDelay)
             {
-                var res = blocks.Find(x => x.id == (Guid)(sender as Border).Tag);
+                var tmp = sender as Border;
+                var res = blocks.Find(x => x.Id == (Guid)(sender as Border).Tag);
                 var optionWindow = new CodeBlockOptionWindow(res);
                 optionWindow.ShowDialog();
 
@@ -333,8 +334,8 @@ namespace app
                     case "Loop":
                         newMusicBlock = new LoopBlock
                         {
-                            id = guid,
-                            Blocks = new List<MusicBlock>(),
+                            Id = guid,
+                            Blocks = [],
                             RepeatCount = 5
                         };
                         break;

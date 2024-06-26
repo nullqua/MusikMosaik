@@ -5,10 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:app"
         mc:Ignorable="d"
-        Title="" Height="200" Width="300" ResizeMode="NoResize">
-    <DockPanel>
-        <TextBlock FontWeight="Medium" FontSize="18" DockPanel.Dock="Top">Code Block</TextBlock>
-        <StackPanel x:Name="panel"></StackPanel>
-        <Button Margin="0 10 0 0" DockPanel.Dock="Bottom">Fertig</Button>
-    </DockPanel>
+        Title="CodeBlock Optionen" Height="300" Width="300" ResizeMode="NoResize">
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+        <StackPanel>
+            <StackPanel x:Name="panel" Orientation="Vertical"></StackPanel>
+            <Button Height="30">Fertig</Button>
+        </StackPanel>
+    </ScrollViewer>
 </Window>

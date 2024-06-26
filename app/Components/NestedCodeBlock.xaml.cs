@@ -12,6 +12,9 @@ namespace app.Components
         public NestedCodeBlock()
         {
             InitializeComponent();
+
+            outerBorder.MouseLeftButtonDown += MouseLeftButtonDown;
+            outerBorder.Tag = Id;
         }
 
         public static readonly DependencyProperty CountProperty = DependencyProperty.Register(
@@ -72,6 +75,14 @@ namespace app.Components
                 container.Width += 70;
 
                 e.Handled = true;
+            }
+        }
+
+        private void MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (sender is Border border)
+            {
+                (Application.Current.MainWindow as MainWindow).CodeBlock_MouseLeftButtonDown(sender, e);
             }
         }
 
