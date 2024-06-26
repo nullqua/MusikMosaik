@@ -1,6 +1,7 @@
 ﻿using Melanchall.DryWetMidi.Interaction;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design.Serialization;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -39,6 +40,7 @@ namespace app.Model
             int OvertoneInt = int.MaxValue;
             int ChordTerz;
             int ChordQuint;
+            int ChordOktav;
             Notenames[5] = Overtone + Pitch.ToString();
             for (int i = 0; i < AllNotes.Length; i++)
             {
@@ -61,52 +63,58 @@ namespace app.Model
             {
                 ChordTerz = (RootNoteInt + 4);
                 ChordQuint = (RootNoteInt + 7);
+                ChordOktav = (RootNoteInt);
             }
             else if (Mode == "Minor")
             {
                 ChordTerz = (RootNoteInt + 3);
                 ChordQuint = (RootNoteInt + 7);
+                ChordOktav = (RootNoteInt);
             }
             else
             {
                 throw new Exception("Mode wrong falue different to Major/Minor");
             }
-            if (RootNoteInt < OvertoneInt && OvertoneInt <= ChordTerz)
-            {
-                if (true)
-                {
+            RootNoteInt -= 13;
 
-                }
-            }
-            
-        }
-        private void MoveScale()
-        {
-            Boolean found = false;
-            string[] AllNotesMoveToBase = AllNotes;
-            int j = 0;
-            int BasstoneInt = int.MaxValue;
-            for (int i = 0; i < AllNotes.Length; i++)
+            if(ChordTerz > OvertoneInt)
             {
-                if(Basstone == AllNotes[i])
-                {
-                    BasstoneInt = i;
-                    found = true;
-                }
-                if(found)
-                {
-                    AllNotesMoveToBase[j] = AllNotes[i];
-                    j++;
-                }
+                ChordTerz -= 13;
+                RootNoteInt -= 13;
             }
-            if(!found)
+            else if(ChordTerz == OvertoneInt)
             {
-                throw new Exception("BassTon Falsch");
+
             }
-            for(int i = 0;i < BasstoneInt; i++)
+            else
             {
-                AllNotesMoveToBase[j] = AllNotes[i];
-                j++;
+
+            }
+            if (ChordQuint > OvertoneInt)
+            {
+                ChordQuint -= 13;
+                RootNoteInt -= 13;
+            }
+            else if(ChordQuint == OvertoneInt)
+            {
+
+            }
+            else
+            {
+
+            }
+            if(ChordOktav > OvertoneInt)
+            {
+                ChordOktav -= 13;
+                RootNoteInt -= 13;
+            }
+            else if (ChordOktav == OvertoneInt)
+            {
+
+            }
+            else
+            {
+
             }
         }
     }
