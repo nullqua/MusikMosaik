@@ -1,19 +1,15 @@
 ﻿using Melanchall.DryWetMidi.Interaction;
-using Melanchall.DryWetMidi.MusicTheory;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design.Serialization;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Media.Animation;
-using System.Collections.Generic;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace app.Model
+namespace TestAudio
 {
-    public class ChordBlock : MusicBlock
+    public class ChordBlock
     {
         public int Velocity;
         public MusicalTimeSpan MusicalTimeSpan;
@@ -21,35 +17,35 @@ namespace app.Model
         public string Overtone;
         public int Pitch;
         private string[] AllNotes = {
-            "c", "c#", "d", "d#", "e", "f", "f#", "g", "g#", "a", "a#", "b"
+            "C", "CSharp", "D", "DSharp", "E", "F", "FSharp", "G", "GSharp", "A", "ASharp", "H"
         };
         string Mode;
         /// <summary>
         /// GrundTon1, Terz, Quinte, GrundTon2, MelodieTon
         /// </summary>
-        public string[] Notenames = new string[5];
+        private string[] Notenames = new string[5];
         /// <summary>
         /// GrundTon1, Terz, Quinte, GrundTon2, MelodieTon
         /// </summary>
         public int[] Notepitches = new int[5];
+
         public string[] NotenamesFinal;
-        public ChordBlock(Guid id, string basstone, string overtone, int pitch, string mode, int timenumerator, int timedenominatorint, int velocity)
+        public ChordBlock(string basstone, string overtone, int pitch, string mode)
         {
-            Id = id;
+
+            //Id = id;
             this.Basstone = basstone;
             this.Overtone = overtone;
             this.Pitch = pitch;
             this.Mode = mode;
-            MusicalTimeSpan = new MusicalTimeSpan(timenumerator, timedenominatorint);
-            this.Velocity = velocity;
+
             for (int i = 0; i < Notepitches.Length; i++)
             {
                 Notepitches[i] = pitch;
             }
             FillNotenames();
             IsNotenamestwice();
-
-
+            printNotenames();
         }
 
         private void FillNotenames()
@@ -79,7 +75,7 @@ namespace app.Model
             if (Mode == "Major")
             {
                 Notenames[0] = Basstone;
-                ChordTerz = (RootNoteInt + 4) % 12;
+                ChordTerz = (RootNoteInt + 4) %12;
                 Notenames[1] = AllNotes[ChordTerz % 12];
                 ChordQuint = (RootNoteInt + 7) % 12;
                 Notenames[2] = AllNotes[ChordQuint % 12];
@@ -103,11 +99,11 @@ namespace app.Model
                 throw new Exception("Mode wrong falue different to Major/Minor");
             }
             RootNoteInt -= 13;
-            Notepitches[0] = Notepitches[0] - 1;
+            Notepitches[0] = Notepitches[0]-1;
             if (ChordTerz > OvertoneInt)
             {
                 ChordTerz -= 13;
-                Notepitches[1] = Notepitches[1] - 1;
+                Notepitches[1] = Notepitches[1]-1;
                 RootNoteBool = true;
             }
             else if (ChordTerz == OvertoneInt)
@@ -121,7 +117,7 @@ namespace app.Model
             if (ChordQuint > OvertoneInt)
             {
                 ChordQuint -= 13;
-                Notepitches[2] = Notepitches[2] - 1;
+                Notepitches[2] = Notepitches[2]-1;
                 RootNoteBool = true;
             }
             else if (ChordQuint == OvertoneInt)
@@ -135,7 +131,7 @@ namespace app.Model
             if (ChordOktav > OvertoneInt)
             {
                 ChordOktav -= 13;
-                Notepitches[3] = Notepitches[3] - 1;
+                Notepitches[3] = Notepitches[3]-1;
                 RootNoteBool = true;
             }
             else if (ChordOktav == OvertoneInt)
@@ -149,14 +145,13 @@ namespace app.Model
             if (RootNoteBool)
             {
                 RootNoteInt -= 13;
-                Notepitches[0] = Notepitches[0] - 1;
+                Notepitches[0] = Notepitches[0]-1;
             }
             for (int i = 0; i < Notepitches.Length; i++)
             {
                 Notenames[i] = Notenames[i] + Notepitches[i].ToString();
             }
         }
-
         private void IsNotenamestwice()
         {
             HashSet<string> set = new HashSet<string>();
@@ -175,8 +170,8 @@ namespace app.Model
         }
         public void printNotenames()
         {
-            for (int i = 0; i < NotenamesFinal.Length; i++)
-            {
+            for (int i = 0;i < NotenamesFinal.Length;i++)
+            { 
                 Debug.WriteLine(NotenamesFinal[i]);
             }
         }

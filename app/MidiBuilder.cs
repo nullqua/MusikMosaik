@@ -41,7 +41,6 @@ public class MidiBuilder
 
     public string buildMidi(string midiName, short bpm)
     {
-        
         var pattern = patternBuilder.Build();
         var midiFile = pattern.ToFile(TempoMap.Create(new TicksPerQuarterNoteTimeDivision(480), Tempo.FromBeatsPerMinute(bpm)));
         midiFile.Write(midiName + ".mid", overwriteFile: true);

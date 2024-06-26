@@ -13,8 +13,8 @@ public class MidiSampleProvider : ISampleProvider
 
     public MidiSampleProvider(string soundFontPath)
     {
-        synthesizer = new Synthesizer(soundFontPath, format.SampleRate);
-        sequencer = new MidiFileSequencer(synthesizer);
+        //synthesizer = new Synthesizer(soundFontPath, format.SampleRate);
+        sequencer = new MidiFileSequencer(new Synthesizer(soundFontPath, format.SampleRate));
 
         mutex = new object();
     }

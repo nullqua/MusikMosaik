@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace app
 {
-    internal class MidiPlayer
+    public class MidiPlayer
     {
-        public static void PlayMidi(string mididatei, string soundfont)
+        public static void PlayMidi(string mididatei)
         {
-            var player = new MidiSampleProvider(@"..\..\..\" + soundfont);
+            var player = new MidiSampleProvider("TimGM6mb.sf2");
 
             using (var waveOut = new WaveOut(WaveCallbackInfo.FunctionCallback()))
             {
@@ -20,13 +20,10 @@ namespace app
                 waveOut.Play();
 
                 // Load the MIDI file.
-                var midiFile = new MeltySynth.MidiFile(@"..\..\..\" + mididatei);
+                var midiFile = new MeltySynth.MidiFile(mididatei);
 
                 // Play the MIDI file.
                 player.Play(midiFile, true);
-
-                // Wait until any key is pressed.
-                Console.ReadKey();
             }
         }
     }
