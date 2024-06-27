@@ -22,16 +22,20 @@ namespace app
     /// </summary>
     public partial class CodeBlockOptionWindow : Window
     {
+        private MusicBlock musicBlock;
+
         public CodeBlockOptionWindow(ref MusicBlock musicBlock)
         {
             InitializeComponent();
+
+            this.musicBlock = musicBlock;
 
             var stackPanel = new StackPanel
             {
                 Margin = new Thickness(10, 5, 10, 20)
             };
 
-            if (musicBlock is LoopBlock)
+            if (musicBlock is LoopBlock block)
             {
                 var label = new Label { Content = "Anzahl Durchläufe:" };
                 var textBox = new TextBox { Text = "1" };
@@ -174,6 +178,11 @@ namespace app
         {
             var textBox = sender as TextBox;
             e.Handled = Regex.IsMatch(e.Text, "[^0-9]+");
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
