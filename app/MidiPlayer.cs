@@ -12,7 +12,7 @@ namespace app
 {
     public class MidiPlayer
     {
-        public static async void MididateiAbspielen(string mididatei)
+        public static async void PlayMidiFile(string mididatei)
         {
             var player = new MidiSampleProvider("TimGM6mb.sf2");
 

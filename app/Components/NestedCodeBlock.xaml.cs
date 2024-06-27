@@ -13,21 +13,23 @@ namespace app.Components
     /// </summary>
     public partial class NestedCodeBlock : UserControl
     {
-        private List<MusicBlock> blocks;
+        private List<List<MusicBlock>> blocks;
 
         private readonly Guid id;
+        private readonly int sectionCount;
 
         private UIElement selected;
         private UIElement lastClickedInnerBlock;
 
         private DateTime lastClickTime = DateTime.MinValue;
-        private DispatcherTimer clickTimer = new DispatcherTimer();
+        private DispatcherTimer clickTimer = new();
 
-        public NestedCodeBlock(Guid id, ref List<MusicBlock> blocks, ref UIElement selected)
+        public NestedCodeBlock(Guid id, int sectionCount, ref List<List<MusicBlock>> blocks, ref UIElement selected)
         {
             InitializeComponent();
 
             this.id = id;
+            this.sectionCount = sectionCount;
             this.blocks = blocks;
             this.selected = selected;
 
@@ -80,7 +82,7 @@ namespace app.Components
                 };
                 newCodeBlock.MouseLeftButtonDown += InnerBlock_MouseLeftButtonDown;
 
-                var selfBlock = blocks.Find(x => x.Id == id) as LoopBlock;
+                var selfBlock = blocks[sectionCount].Find(x => x.Id == id) as LoopBlock;
 
                 switch (type)
                 {
@@ -159,7 +161,7 @@ namespace app.Components
                 clickTimer.Stop();
                 Debug.WriteLine("double click, open inner block option dialog");
 
-                var selfBlock = blocks.Find(x => x.Id == id) as LoopBlock;
+                var selfBlock = blocks[sectionCount].Find(x => x.Id == id) as LoopBlock;
 
                 var res = selfBlock.Blocks.Find(x => x.Id == type.Id) as MusicBlock;
 
@@ -192,7 +194,7 @@ namespace app.Components
                 clickTimer.Stop();
                 Debug.WriteLine("double click, open loop block option dialog");
 
-                var res = blocks.Find(x => x.Id == id) as MusicBlock;
+                var res = blocks[sectionCount].Find(x => x.Id == id) as MusicBlock;
                 
                 var optionWindow = new CodeBlockOptionWindow(ref res);
                 optionWindow.ShowDialog();

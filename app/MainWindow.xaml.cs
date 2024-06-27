@@ -30,12 +30,13 @@ namespace app
 
         private JObject metadata;
 
-        private List<MusicBlock> blocks = new List<MusicBlock>();
+        //private List<MusicBlock> blocks = [];
+        private List<List<MusicBlock>> blocks = [];
 
         private string fullMidiPath;
         private List<string> sectionsMidiPath = [];
         
-        private int countButtons = 0;
+        private int sectionCount = 0;
 
         public MainWindow()
         {
@@ -63,6 +64,11 @@ namespace app
                     {
                         mainPanel.Children.Clear();
                         ProcessArchive(Path.Combine(tempDir.FullName, Path.GetFileNameWithoutExtension(file)));
+
+                        for (var idx = 0; idx < sectionsMidiPath.Count; idx++)
+                        {
+                            blocks.Add([]);
+                        };
 
                         foreach (var button in songPanel.Children.OfType<Button>())
                         {
@@ -128,16 +134,7 @@ namespace app
 
         private void HandleDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            if (sender is Border border && border.Tag is Guid guid)
-            {
-                var block = blocks.Find(x => x.Id == guid);
-
-                if (block != null)
-                {
-                    var optionWindow = new CodeBlockOptionWindow(ref block);
-                    optionWindow.ShowDialog();
-                }
-            }
+            
         }
 
         private void ProcessArchive(string directoryPath)
@@ -176,7 +173,7 @@ namespace app
                         sectionsMidiPath.Add(Path.Combine(directoryPath, scoreMidiPath));
 
                         AddRowToMainPanel(Path.GetFileName(directory), bitmap);
-                        countButtons++;
+                        sectionCount++;
                     }
                 }
             }
@@ -214,7 +211,7 @@ namespace app
             grid.RowDefinitions.Add(row2);
 
             Button button1 = new Button { Content = "Play" };
-            button1.Tag = countButtons;
+            button1.Tag = sectionCount;
             Grid.SetColumn(button1, 0);
             Grid.SetRow(button1, 0);
             button1.Click += ScorePlay_Click;
@@ -227,9 +224,9 @@ namespace app
             innerGrid.RowDefinitions.Add(new RowDefinition());
             innerGrid.RowDefinitions.Add(new RowDefinition());
             Button button2 = new Button { Content = "Play" };
-            button2.Tag = countButtons;
+            button2.Tag = sectionCount;
             Button button3 = new Button { Content = "Remove all" };
-            button3.Tag = countButtons;
+            button3.Tag = sectionCount;
             Grid.SetRow(button2, 0);
             Grid.SetRow(button3, 1);
             innerGrid.Children.Add(button2);
@@ -250,6 +247,7 @@ namespace app
             };
             stackPanel.Drop += CodeBlocksPlacement_Drop;
             stackPanel.AllowDrop = true;
+            stackPanel.Tag = sectionCount;
             Grid.SetColumn(scrollViewer, 1);
             Grid.SetRow(scrollViewer, 1);
             scrollViewer.Content = stackPanel;
@@ -290,10 +288,13 @@ namespace app
 
         private void CodeBlockPlay_Click(object sender, RoutedEventArgs e)
         {
-            var buttoncount =  (sender as Button).Tag;
-            Debug.WriteLine(buttoncount.ToString());
-            MidiBuilder midiBuilder = new MidiBuilder();
-            foreach (MusicBlock musicBlock in blocks)
+            var section = Convert.ToInt32((sender as Button).Tag);
+
+            Debug.WriteLine(section.ToString());
+
+            MidiBuilder midiBuilder = new();
+
+            foreach (MusicBlock musicBlock in blocks[section])
             {
                 if (musicBlock == null)
                 {
@@ -323,7 +324,7 @@ namespace app
                 }
             }
             midiBuilder.buildMidi("test", 100);
-            MidiPlayer.MididateiAbspielen("test.mid");
+            MidiPlayer.PlayMidiFile("test.mid");
             //MidiFileSequencer sequencer
             //MessageBox.Show("test.mid");
         }
@@ -347,16 +348,7 @@ namespace app
             {
 
             }
-            //if (clickTimer.IsEnabled)
-            //{
-            //    clickTimer.Stop();
-
-            //    HandleDoubleClick(sender, e);
-            //}
-            //else
-            //{
-            //    clickTimer.Start();
-            //}
+      
         }
 
         internal void CodeBlock_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
@@ -369,19 +361,22 @@ namespace app
         {
             if (e.Data.GetData(typeof(Border)) is Border codeBlock)
             {
+                var section = Convert.ToInt32(((sender as Border).Parent as StackPanel).Tag);
+                
                 var type = codeBlock.Tag as string;
                 var guid = Guid.NewGuid();
 
                 if (type == "Loop")
                 {
-                    var newCodeBlock = new NestedCodeBlock(guid, ref blocks, ref selected)
+                    var newCodeBlock = new NestedCodeBlock(guid, section, ref blocks, ref selected)
                     {
                         Width = 140,
                         Height = codeBlock.Height,
                         Count = "5"
                     };
 
-                    blocks.Add(new LoopBlock(guid, 5));
+                    //blocks.Add(new LoopBlock(guid, 5));
+                    blocks[section].Add(new LoopBlock(guid, 5));
 
                     var stackPanel = (sender as Border).Parent as StackPanel;
                     stackPanel.Children.Insert(stackPanel.Children.Count - 1, newCodeBlock);
@@ -407,10 +402,10 @@ namespace app
                     switch (type)
                     {
                         case "Note":
-                            blocks.Add(new NoteBlock(guid, "c", 60, 1, 4, 100));
+                            blocks[section].Add(new NoteBlock(guid, "c", 60, 1, 4, 100));
                             break;
                         case "Chord":
-                            blocks.Add(new ChordBlock(guid, "c", "h", 60, "major", 1, 4, 100));
+                            blocks[section].Add(new ChordBlock(guid, "c", "h", 60, "major", 1, 4, 100));
                             break;
                     }
 
@@ -421,30 +416,6 @@ namespace app
                     var stackPanel = (sender as Border).Parent as StackPanel;
                     stackPanel.Children.Insert(stackPanel.Children.Count - 1, newCodeBlock);
                 }
-
-                //var senderBlock = (sender as Border).Tag as MusicBlock;
-
-                //MusicBlock newMusicBlock = null;
-
-                //switch (type)
-                //{
-                //    case "Note":
-                //        newMusicBlock = new NoteBlock(guid, "c", 60, 1, 4, 100);
-                //        break;
-                //    case "Chord":
-                //        newMusicBlock = new ChordBlock(guid, "c", "h", 60, "major", 1, 4, 100);
-                //        break;
-                //    case "Loop":
-                //        newMusicBlock = new LoopBlock
-                //        {
-                //            Id = guid,
-                //            Blocks = [],
-                //            RepeatCount = 5
-                //        };
-                //        break;
-                //    default:
-                //        throw new Exception("Unknown type: " + type);
-                //}
 
                 e.Handled = true;
             }
