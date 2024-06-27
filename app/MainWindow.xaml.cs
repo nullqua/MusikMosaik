@@ -312,8 +312,8 @@ namespace app
 
             if (selected != null)
             {
-                elem.BorderBrush = Brushes.Transparent;
-                elem.BorderThickness = new Thickness(0);
+                elem.BorderBrush = Brushes.Black;
+                elem.BorderThickness = new Thickness(2);
 
                 selected = null;
             }
@@ -357,7 +357,19 @@ namespace app
 
         private void CodeBlock_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            
+            if (sender as Border == selected)
+            {
+                var section = Convert.ToInt32(((sender as Border).Parent as StackPanel).Tag);
+
+                var res = blocks[section].Find(x => x.Id == ((sender as Border).Tag as TagData).Id);
+                var parent = (sender as Border).Parent as StackPanel;
+
+                blocks[section].Remove(res);
+                parent.Children.Remove(sender as Border);
+
+                selected = null;
+            }
+            e.Handled = true;
         }
 
         private void CodeBlocksPlacement_Drop(object sender, DragEventArgs e)
@@ -400,6 +412,9 @@ namespace app
                         },
                         Tag = new TagData(guid, type),
                     };
+
+                    newCodeBlock.BorderBrush = Brushes.Black;
+                    newCodeBlock.BorderThickness = new Thickness(2);
 
                     switch (type)
                     {

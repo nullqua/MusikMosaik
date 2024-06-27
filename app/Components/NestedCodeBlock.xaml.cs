@@ -81,6 +81,8 @@ namespace app.Components
                     Tag = new TagData(guid, type)
                 };
                 newCodeBlock.MouseLeftButtonDown += InnerBlock_MouseLeftButtonDown;
+                newCodeBlock.BorderBrush = Brushes.Black;
+                newCodeBlock.BorderThickness = new Thickness(2);
 
                 var selfBlock = blocks[sectionCount].Find(x => x.Id == id) as LoopBlock;
 
@@ -115,8 +117,8 @@ namespace app.Components
 
             if (selected != null)
             {
-                elem.BorderBrush = Brushes.Transparent;
-                elem.BorderThickness = new Thickness(0);
+                elem.BorderBrush = Brushes.Black;
+                elem.BorderThickness = new Thickness(2);
 
                 selected = null;
             }
