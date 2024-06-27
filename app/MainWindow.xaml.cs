@@ -31,6 +31,10 @@ namespace app
         private JObject metadata;
 
         private List<MusicBlock> blocks = new List<MusicBlock>();
+
+        private string fullMidiPath;
+        private List<string> sectionsMidiPath = [];
+        
         private int countButtons = 0;
 
         public MainWindow()
@@ -39,27 +43,41 @@ namespace app
 
             string[] files = Directory.GetFiles(@"..\..\..\examples");
 
+            var tempDir = Directory.CreateDirectory(Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString()));
+
             foreach (string file in files)
             {
-                Button button = new Button
+                try 
                 {
-                    Content = Path.GetFileNameWithoutExtension(file)
-                };
+                    var extractPath = Path.Combine(tempDir.FullName, Path.GetFileNameWithoutExtension(file));
+                    Directory.CreateDirectory(extractPath);
 
-                button.Click += (sender, e) =>
-                {
-                    mainPanel.Children.Clear();
-                    OpenFile(file);
+                    ZipFile.ExtractToDirectory(file, extractPath);
 
-                    foreach (var button in songPanel.Children.OfType<Button>())
+                    Button button = new Button
                     {
-                        button.IsEnabled = true;
-                    }
+                        Content = Path.GetFileNameWithoutExtension(file)
+                    };
 
-                    var clickedButton = (Button)sender;
-                    clickedButton.IsEnabled = false;
-                };
-                songPanel.Children.Add(button);
+                    button.Click += (sender, e) =>
+                    {
+                        mainPanel.Children.Clear();
+                        ProcessArchive(Path.Combine(tempDir.FullName, Path.GetFileNameWithoutExtension(file)));
+
+                        foreach (var button in songPanel.Children.OfType<Button>())
+                        {
+                            button.IsEnabled = true;
+                        }
+
+                        var clickedButton = (Button)sender;
+                        clickedButton.IsEnabled = false;
+                    };
+                    songPanel.Children.Add(button);
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.Message);
+                }
             }
 
             TextBlock placeholder = new TextBlock
@@ -122,53 +140,49 @@ namespace app
             }
         }
 
-        private void OpenFile(string filePath)
+        private void ProcessArchive(string directoryPath)
         {
-            using (ZipArchive archive = ZipFile.OpenRead(filePath))
+            try
             {
-                var metadataEntry = archive.Entries.FirstOrDefault(e => e.FullName == "metadata.json");
-                if (metadataEntry != null)
+                var metadataPath = Path.Combine(directoryPath, "metadata.json");
+                if (File.Exists(metadataPath))
                 {
-                    using (Stream stream = metadataEntry.Open())
-                    {
-                        using (StreamReader reader = new StreamReader(stream))
-                        {
-                            string json = reader.ReadToEnd();
-
-                            metadata = JObject.Parse(json);
-                            Debug.WriteLine(metadata);
-                        }
-                    }
+                    string json = File.ReadAllText(metadataPath);
+                    metadata = JObject.Parse(json);
                 }
 
-                var sectionDireories = archive.Entries
-                    .Where(e => e.FullName.StartsWith("sections/") && e.FullName.EndsWith("/"))
-                    .Select(e => e.FullName.Split('/')[1])
-                    .Distinct()
-                    .ToList();
+                fullMidiPath = Path.Combine(directoryPath, "score.mid");
 
+                var sectionDirectories = Directory.GetDirectories(Path.Combine(directoryPath, "sections"));
 
-                foreach (var directory in sectionDireories)
+                foreach (var directory in sectionDirectories)
                 {
-                    var scorePngEntry = archive.Entries.FirstOrDefault(e => e.FullName == $"sections/{directory}/score.png");
-                    if (scorePngEntry != null)
+                    var scorePngPath = Path.Combine(directory, "score.png");
+                    var scoreMidiPath = Path.Combine(directory, "score.mid");
+
+                    if (File.Exists(scorePngPath))
                     {
                         BitmapImage bitmap = new BitmapImage();
-                        using (Stream stream = scorePngEntry.Open())
+                        using (FileStream stream = File.OpenRead(scorePngPath))
                         {
-                            MemoryStream ms = new MemoryStream();
-                            stream.CopyTo(ms);
-                            ms.Position = 0;
-
                             bitmap.BeginInit();
-                            bitmap.StreamSource = ms;
+                            bitmap.StreamSource = stream;
                             bitmap.CacheOption = BitmapCacheOption.OnLoad;
                             bitmap.EndInit();
                         }
-                        AddRowToMainPanel(directory, bitmap);
+
+                        bitmap.Freeze();
+
+                        sectionsMidiPath.Add(Path.Combine(directoryPath, scoreMidiPath));
+
+                        AddRowToMainPanel(Path.GetFileName(directory), bitmap);
                         countButtons++;
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
             }
         }
 
