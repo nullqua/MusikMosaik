@@ -204,6 +204,8 @@ namespace app
             {
 
             }
+
+            Close();
         }
     }
 }
