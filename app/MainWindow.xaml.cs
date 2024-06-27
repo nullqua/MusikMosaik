@@ -22,6 +22,7 @@ namespace app
     public partial class MainWindow : Window
     {
         private UIElement selected;
+        private UIElement lastClickedBlock;
 
         private readonly double clickDelay = 200;
         private DateTime lastClickTime = DateTime.MinValue;
@@ -30,7 +31,6 @@ namespace app
 
         private JObject metadata;
 
-        //private List<MusicBlock> blocks = [];
         private List<List<MusicBlock>> blocks = [];
 
         private string fullMidiPath;
@@ -41,6 +41,9 @@ namespace app
         public MainWindow()
         {
             InitializeComponent();
+
+            clickTimer.Interval = TimeSpan.FromMilliseconds(clickDelay);
+            clickTimer.Tick += CodeBlock_ClickTimer_Tick;
 
             string[] files = Directory.GetFiles(@"..\..\..\examples");
 
@@ -102,39 +105,6 @@ namespace app
                     child.PreviewMouseLeftButtonDown += CodeBlocksPanel_PreviewMouseLeftButtonDown;
                 }
             }
-
-            clickTimer.Interval = TimeSpan.FromMilliseconds(System.Windows.Forms.SystemInformation.DoubleClickTime);
-            clickTimer.Tick += ClickTimer_Tick;
-        }
-
-        private void ClickTimer_Tick(object sender, EventArgs e)
-        {
-            clickTimer.Stop();
-
-            HandleSingleClick(sender, e);
-        }
-
-        private void HandleSingleClick(object sender, EventArgs e)
-        {
-            if (selected != null)
-            {
-                (selected as Border).BorderBrush = Brushes.Transparent;
-                (selected as Border).BorderThickness = new Thickness(0);
-
-                selected = null;
-            }
-            else
-            {
-                selected = sender as UIElement;
-
-                (selected as Border).BorderBrush = Brushes.Orange;
-                (selected as Border).BorderThickness = new Thickness(2);
-            }
-        }
-
-        private void HandleDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            
         }
 
         private void ProcessArchive(string directoryPath)
@@ -342,22 +312,63 @@ namespace app
             }
         }
 
-        internal void CodeBlock_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void CodeBlock_ClickTimer_Tick(object sender, EventArgs e)
         {
-            if ((sender as FrameworkElement).Name == "outerBorder")
+            clickTimer.Stop();
+
+            var elem = lastClickedBlock as Border;
+
+            if (selected != null)
             {
+                elem.BorderBrush = Brushes.Transparent;
+                elem.BorderThickness = new Thickness(0);
 
+                selected = null;
             }
-      
-        }
+            else
+            {
+                selected = elem;
 
-        internal void CodeBlock_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+                elem.BorderBrush = Brushes.Orange;
+                elem.BorderThickness = new Thickness(3);
+            }
+        }   
+
+        private void CodeBlock_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            // codeBlocksPlacement.Children.Remove(selected);
-            selected = null;
+            var section = Convert.ToInt32(((sender as Border).Parent as StackPanel).Tag);
+            
+            var currentClickTime = DateTime.Now;
+            var clickSpan = currentClickTime - lastClickTime;
+
+            if (clickSpan.TotalMilliseconds < 500)
+            {
+                clickTimer.Stop();
+
+                var res = blocks[section].Find(x => x.Id == ((sender as Border).Tag as TagData).Id);
+            
+                var optionWindow = new CodeBlockOptionWindow(ref res);
+                optionWindow.ShowDialog();
+            }
+            else
+            {
+                clickTimer.Stop();
+
+                lastClickedBlock = sender as UIElement;
+
+                clickTimer.Start();
+            }
+
+            lastClickTime = currentClickTime;
+            e.Handled = true;
         }
 
-        internal void CodeBlocksPlacement_Drop(object sender, DragEventArgs e)
+        private void CodeBlock_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            
+        }
+
+        private void CodeBlocksPlacement_Drop(object sender, DragEventArgs e)
         {
             if (e.Data.GetData(typeof(Border)) is Border codeBlock)
             {
@@ -375,7 +386,6 @@ namespace app
                         Count = "5"
                     };
 
-                    //blocks.Add(new LoopBlock(guid, 5));
                     blocks[section].Add(new LoopBlock(guid, 5));
 
                     var stackPanel = (sender as Border).Parent as StackPanel;
@@ -423,7 +433,7 @@ namespace app
 
         private void DeleteAll_Click(object sender, RoutedEventArgs e)
         {
-
+            
         }
     }
 }
