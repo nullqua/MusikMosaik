@@ -1,6 +1,10 @@
-﻿using System.Diagnostics;
+﻿using app.Model;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace app.Components
 {
@@ -9,19 +13,33 @@ namespace app.Components
     /// </summary>
     public partial class NestedCodeBlock : UserControl
     {
-        public NestedCodeBlock()
+        private List<MusicBlock> blocks;
+
+        private readonly Guid id;
+
+        private UIElement selected;
+        private UIElement lastClickedInnerBlock;
+
+        private DateTime lastClickTime = DateTime.MinValue;
+        private DispatcherTimer clickTimer = new DispatcherTimer();
+
+        public NestedCodeBlock(Guid id, ref List<MusicBlock> blocks, ref UIElement selected)
         {
             InitializeComponent();
 
-            outerBorder.MouseLeftButtonDown += MouseLeftButtonDown;
-            outerBorder.Tag = Id;
+            this.id = id;
+            this.blocks = blocks;
+            this.selected = selected;
+
+            outerBorder.MouseLeftButtonDown += OuterBorder_MouseLeftButtonDown;
+            outerBorder.Tag = new TagData(id, "Loop");
+
+            clickTimer.Interval = TimeSpan.FromMilliseconds(500);
+            clickTimer.Tick += OuterBorder_ClickTimer_Click;
         }
 
         public static readonly DependencyProperty CountProperty = DependencyProperty.Register(
             "Count", typeof(string), typeof(NestedCodeBlock), new PropertyMetadata(default(string)));
-
-        public static readonly DependencyProperty IdProperty = DependencyProperty.Register(
-            "Id", typeof(Guid), typeof(NestedCodeBlock), new PropertyMetadata(default(Guid)));
 
         public StackPanel CodeBlockContainer => container;
 
@@ -30,17 +48,9 @@ namespace app.Components
             get => (string)GetValue(CountProperty);
             set => SetValue(CountProperty, value);
         }
-
-        public Guid Id
-        {
-            get => (Guid)GetValue(IdProperty);
-            set => SetValue(IdProperty, value);
-        }
         
         private void Container_Drop(object sender, DragEventArgs e)
         {
-            Debug.WriteLine((e.Data.GetData(typeof(Border)) as Border).Tag);
-
             if ((e.Data.GetData(typeof(Border)) as Border).Tag.Equals("Loop"))
             {
                 MessageBox.Show("Geschachtelte Schleifen sind nicht erlaubt.", "Fehler");
@@ -50,6 +60,9 @@ namespace app.Components
 
             if (e.Data.GetData(typeof(Border)) is Border codeBlock)
             {
+                var type = codeBlock.Tag as string;
+                var guid = Guid.NewGuid();
+
                 var newCodeBlock = new Border
                 {
                     Width = 70,
@@ -62,14 +75,23 @@ namespace app.Components
                         FontWeight = (codeBlock.Child as TextBlock)?.FontWeight ?? FontWeights.Normal,
                         HorizontalAlignment = (codeBlock.Child as TextBlock)?.HorizontalAlignment ?? HorizontalAlignment.Left,
                         VerticalAlignment = (codeBlock.Child as TextBlock)?.VerticalAlignment ?? VerticalAlignment.Top
-                    }
+                    },
+                    Tag = new TagData(guid, type)
                 };
+                newCodeBlock.MouseLeftButtonDown += InnerBlock_MouseLeftButtonDown;
 
-                if (newCodeBlock is Border border)
+                var selfBlock = blocks.Find(x => x.Id == id) as LoopBlock;
+
+                switch (type)
                 {
-                    border.MouseLeftButtonDown += (Application.Current.MainWindow as MainWindow).CodeBlock_MouseLeftButtonDown;
-                    border.MouseRightButtonDown += (Application.Current.MainWindow as MainWindow).CodeBlock_MouseRightButtonDown;
+                    case "Note":
+                        selfBlock.Blocks.Add(new NoteBlock(guid, "C", 0, 4, 4, 100));
+                        break;
+                    case "Chord":
+                        selfBlock.Blocks.Add(new ChordBlock(guid, "C", "E", 0, "Major", 4, 4, 100));
+                        break;
                 }
+
                 container.Children.Insert(container.Children.Count - 1, newCodeBlock);
 
                 container.Width += 70;
@@ -78,12 +100,110 @@ namespace app.Components
             }
         }
 
-        private void MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void InnerBlock_ClickTimer_Click(object sender, EventArgs e)
         {
-            if (sender is Border border)
+            clickTimer.Stop();
+
+            clickTimer.Tick -= InnerBlock_ClickTimer_Click;
+            clickTimer.Tick += OuterBorder_ClickTimer_Click;
+
+            Debug.WriteLine("mark inner block as selected");
+
+            var elem = lastClickedInnerBlock as Border;
+
+            if (selected != null)
             {
-                (Application.Current.MainWindow as MainWindow).CodeBlock_MouseLeftButtonDown(sender, e);
+                elem.BorderBrush = Brushes.Transparent;
+                elem.BorderThickness = new Thickness(0);
+
+                selected = null;
             }
+            else
+            {
+                selected = elem;
+
+                elem.BorderBrush = Brushes.Orange;
+                elem.BorderThickness = new Thickness(3);
+            }
+        }
+
+        private void OuterBorder_ClickTimer_Click(object sender, EventArgs e)
+        {
+            clickTimer.Stop();
+
+            Debug.WriteLine("mark loop block as selected");
+
+            if (selected != null)
+            {
+                outerBorder.BorderBrush = Brushes.Transparent;
+                outerBorder.BorderThickness = new Thickness(0);
+
+                selected = null;
+            }
+            else
+            {
+                selected = outerBorder;
+
+                outerBorder.BorderBrush = Brushes.Orange;
+                outerBorder.BorderThickness = new Thickness(3);
+            }
+        }   
+
+        private void InnerBlock_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            var clickSpan = DateTime.Now - lastClickTime;
+            var type = (sender as Border).Tag as TagData;
+
+            if (clickSpan.TotalMilliseconds < 500)
+            {
+                clickTimer.Stop();
+                Debug.WriteLine("double click, open inner block option dialog");
+
+                var selfBlock = blocks.Find(x => x.Id == id) as LoopBlock;
+
+                var res = selfBlock.Blocks.Find(x => x.Id == type.Id) as MusicBlock;
+
+                var optionWindow = new CodeBlockOptionWindow(ref res);
+                optionWindow.ShowDialog();
+            }
+            else
+            {
+                clickTimer.Stop();
+
+                lastClickedInnerBlock = sender as UIElement;
+
+                clickTimer.Tick -= OuterBorder_ClickTimer_Click;
+                clickTimer.Tick += InnerBlock_ClickTimer_Click;
+
+                clickTimer.Start();
+            }
+
+            lastClickTime = DateTime.Now;
+            e.Handled = true;
+        }
+
+        private void OuterBorder_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            var clickSpan = DateTime.Now - lastClickTime;
+            var type = (sender as Border).Tag as TagData;
+
+            if (clickSpan.TotalMilliseconds < 500)
+            {
+                clickTimer.Stop();
+                Debug.WriteLine("double click, open loop block option dialog");
+
+                var res = blocks.Find(x => x.Id == id) as MusicBlock;
+                
+                var optionWindow = new CodeBlockOptionWindow(res);
+                optionWindow.ShowDialog();
+            }
+            else
+            {
+                clickTimer.Stop();
+                clickTimer.Start();
+            }
+
+            lastClickTime = DateTime.Now;
         }
 
         private void StackPanel_SizeChanged(object sender, SizeChangedEventArgs e)

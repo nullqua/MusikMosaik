@@ -10,5 +10,12 @@ namespace app.Model
     {
         public List<MusicBlock> Blocks { get; set; }
         public int RepeatCount { get; set; }
+
+        public LoopBlock(Guid id, int repeatCount)
+        {
+            Id = id;
+            Blocks = new List<MusicBlock>();
+            RepeatCount = repeatCount;
+        }
     }
 }

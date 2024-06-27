@@ -22,7 +22,7 @@ namespace app
     /// </summary>
     public partial class CodeBlockOptionWindow : Window
     {
-        public CodeBlockOptionWindow(MusicBlock musicBlock)
+        public CodeBlockOptionWindow(ref MusicBlock musicBlock)
         {
             InitializeComponent();
 

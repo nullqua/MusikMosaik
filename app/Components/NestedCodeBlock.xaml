@@ -20,8 +20,8 @@
             <TextBlock Text="{Binding Count, RelativeSource={RelativeSource AncestorType=UserControl}}" FontSize="12" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0" Grid.Row="1"></TextBlock>
             <Border x:Name="innerBorder" Width="Auto" Margin="0 5 5 5" Background="White" Grid.Column="1" Grid.RowSpan="2">
                 <StackPanel x:Name="container" SizeChanged="StackPanel_SizeChanged" Drop="Container_Drop" Width="Auto" Orientation="Horizontal">
-                    <Border Drop="Container_Drop" Width="100" Margin="5" BorderBrush="Gray" BorderThickness="2" Background="Transparent">
-                        <TextBlock FontWeight="Bold" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center">+</TextBlock>
+                    <Border x:Name="placeholderBorder" Drop="Container_Drop" Width="100" Margin="5" BorderBrush="Gray" BorderThickness="2" Background="Transparent">
+                        <TextBlock x:Name="placeholder" FontWeight="Bold" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center">+</TextBlock>
                     </Border>
                 </StackPanel>
             </Border>
