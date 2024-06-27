@@ -425,7 +425,23 @@ namespace app
 
         private void DeleteAll_Click(object sender, RoutedEventArgs e)
         {
-            
+            var section = Convert.ToInt32((sender as Button).Tag);
+
+            var panel = mainPanel
+                .Children.OfType<Grid>()
+                .SelectMany(g => g.Children.OfType<ScrollViewer>())
+                .Select(sv => sv.Content)
+                .OfType<StackPanel>()
+                .FirstOrDefault(sp => Convert.ToInt32(sp.Tag) == section);
+
+            var toRemove = panel.Children.Count - 1;
+
+            for (var idx = 0; idx < toRemove; idx++)
+            {
+                panel.Children.RemoveAt(0);
+            }
+
+            blocks[section].Clear();
         }
     }
 }
