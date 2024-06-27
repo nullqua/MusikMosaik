@@ -194,7 +194,7 @@ namespace app.Components
 
                 var res = blocks.Find(x => x.Id == id) as MusicBlock;
                 
-                var optionWindow = new CodeBlockOptionWindow(res);
+                var optionWindow = new CodeBlockOptionWindow(ref res);
                 optionWindow.ShowDialog();
             }
             else

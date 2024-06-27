@@ -116,7 +116,7 @@ namespace app
 
                 if (block != null)
                 {
-                    var optionWindow = new CodeBlockOptionWindow(block);
+                    var optionWindow = new CodeBlockOptionWindow(ref block);
                     optionWindow.ShowDialog();
                 }
             }
