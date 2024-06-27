@@ -5,7 +5,7 @@ public class MididateiFunktionen
 {
     public static void MididateiAbspielen(string mididatei, string soundfont)
     {
-        var player = new MidiSampleProvider(@"..\..\..\"+ soundfont);
+        var player = new MidiSampleProvider(@"..\..\..\" + soundfont);
 
         using (var waveOut = new WaveOut(WaveCallbackInfo.FunctionCallback()))
         {
@@ -13,13 +13,16 @@ public class MididateiFunktionen
             waveOut.Play();
 
             // Load the MIDI file.
-            var midiFile = new MeltySynth.MidiFile(@"..\..\..\"+ mididatei);
+            var midiFile = new MeltySynth.MidiFile(@"..\..\..\" + mididatei);
 
             // Play the MIDI file.
-            player.Play(midiFile, true);
+            player.Play(midiFile);
 
             // Wait until any key is pressed.
-            Console.ReadKey();
+            while (!player.IsPlaying())
+            {
+
+            }
         }
     }
     public static void MididateiAuslesen(string mididatei)

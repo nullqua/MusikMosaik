@@ -1,5 +1,6 @@
 ﻿using app.Components;
 using app.Model;
+using MeltySynth;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Diagnostics;
@@ -27,6 +28,7 @@ namespace app
         private JObject metadata;
 
         private List<MusicBlock> blocks = new List<MusicBlock>();
+        private int countButtons = 0;
 
         public MainWindow()
         {
@@ -119,6 +121,7 @@ namespace app
                             bitmap.EndInit();
                         }
                         AddRowToMainPanel(directory, bitmap);
+                        countButtons++;
                     }
                 }
             }   
@@ -152,6 +155,7 @@ namespace app
             grid.RowDefinitions.Add(row2);
 
             Button button1 = new Button { Content = "Play" };
+            button1.Tag = countButtons;
             Grid.SetColumn(button1, 0);
             Grid.SetRow(button1, 0);
             button1.Click += ScorePlay_Click;
@@ -164,7 +168,9 @@ namespace app
             innerGrid.RowDefinitions.Add(new RowDefinition());
             innerGrid.RowDefinitions.Add(new RowDefinition());
             Button button2 = new Button { Content = "Play" };
+            button2.Tag = countButtons;
             Button button3 = new Button { Content = "Remove all" };
+            button3.Tag = countButtons;
             Grid.SetRow(button2, 0);
             Grid.SetRow(button3, 1);
             innerGrid.Children.Add(button2);
@@ -220,43 +226,47 @@ namespace app
 
         private void ScorePlay_Click(object sender, RoutedEventArgs e)
         {
-            //foreach(MusicBlock musicBlock in blocks)
-            //{
-            //    if (musicBlock != null)
-            //    {
-            //        throw new Exception("MusicBlock is Leer");
-            //    }
-            //    else
-            //    {
-            //        MidiBuilder midiBuilder = new MidiBuilder();
-            //        if (musicBlock is NoteBlock)
-            //        {
-            //            NoteBlock noteBlock = (NoteBlock)musicBlock;
-            //            midiBuilder.addNote(noteBlock.Notename, noteBlock.MusicalTimeSpan);
-            //        }
-            //        else if (musicBlock is ChordBlock)
-            //        {
-
-            //        }
-            //        else if (musicBlock is LoopBlock)
-            //        {
-
-            //        }
-            //        else if (musicBlock is MusicBlock)
-            //        {
-
-            //        }
-            //        else
-            //        {
-            //            throw new Exception("Unknown type: " + musicBlock.GetType);
-            //        }
-            //    }
             MessageBox.Show("Playing song");
         }
 
         private void CodeBlockPlay_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Playing code block");
+            var buttoncount =  (sender as Button).Tag;
+            Debug.WriteLine(buttoncount.ToString());
+            MidiBuilder midiBuilder = new MidiBuilder();
+            foreach (MusicBlock musicBlock in blocks)
+            {
+                if (musicBlock == null)
+                {
+                    throw new Exception("MusicBlock is Leer");
+                }
+                else
+                {
+                    if (musicBlock is NoteBlock)
+                    {
+                        NoteBlock noteBlock = (NoteBlock)musicBlock;
+                        midiBuilder.addNote(noteBlock.Notename, noteBlock.MusicalTimeSpan);
+                    }
+                    else if (musicBlock is ChordBlock)
+                    {
+                        ChordBlock chordBlock = (ChordBlock)musicBlock;
+                        midiBuilder.addChord(chordBlock.Notenames, chordBlock.MusicalTimeSpan);
+                    }
+                    else if (musicBlock is LoopBlock)
+                    {
+                        LoopBlock loopBlock = (LoopBlock)musicBlock;
+                        loopBlock.addLoopblock(midiBuilder);
+                    }
+                    else
+                    {
+                        throw new Exception("Unknown type: " + musicBlock.GetType);
+                    }
+                }
+            }
+            midiBuilder.buildMidi("test", 100);
+            MidiPlayer.MididateiAbspielen("test.mid");
+            //MidiFileSequencer sequencer
+            //MessageBox.Show("test.mid");
         }
 
         private void StackPanel_Drop(object sender, DragEventArgs e)
@@ -326,10 +336,10 @@ namespace app
                 switch (type)
                 {
                     case "Note":
-                        newMusicBlock = new NoteBlock(guid, "c", 60, 1, 4, 100);
+                        newMusicBlock = new NoteBlock(guid, "c", 6, 1, 4, 100);
                         break;
                     case "Chord":
-                        newMusicBlock = new ChordBlock(guid, "c", "h", 60, "major", 1, 4, 100);
+                        newMusicBlock = new ChordBlock(guid, "c#", "b", 4, "Major", 1, 4, 100);
                         break;
                     case "Loop":
                         newMusicBlock = new LoopBlock

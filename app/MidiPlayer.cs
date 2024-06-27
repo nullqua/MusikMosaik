@@ -5,14 +5,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace app
 {
-    internal class MidiPlayer
+    public class MidiPlayer
     {
-        public static void PlayMidi(string mididatei, string soundfont)
+        public static async void MididateiAbspielen(string mididatei)
         {
-            var player = new MidiSampleProvider(@"..\..\..\" + soundfont);
+            var player = new MidiSampleProvider("TimGM6mb.sf2");
 
             using (var waveOut = new WaveOut(WaveCallbackInfo.FunctionCallback()))
             {
@@ -20,38 +22,53 @@ namespace app
                 waveOut.Play();
 
                 // Load the MIDI file.
-                var midiFile = new MeltySynth.MidiFile(@"..\..\..\" + mididatei);
+                var midiFile = new MeltySynth.MidiFile(mididatei);
 
                 // Play the MIDI file.
-                player.Play(midiFile, true);
+                player.Play(midiFile);
 
                 // Wait until any key is pressed.
-                Console.ReadKey();
+                await Task.Run(() =>
+                {
+                    while (!player.IsPlaying())
+                    {
+                        Thread.Sleep(100); // Sleep to prevent busy-waiting
+                    }
+                });
             }
         }
     }
-    class MidiSampleProvider : ISampleProvider
+    public class MidiSampleProvider : ISampleProvider
     {
         private static WaveFormat format = WaveFormat.CreateIeeeFloatWaveFormat(44100, 2);
 
         private Synthesizer synthesizer;
         private MidiFileSequencer sequencer;
+        //private static MidiSampleProvider instance;
 
         private object mutex;
 
         public MidiSampleProvider(string soundFontPath)
         {
-            synthesizer = new Synthesizer(soundFontPath, format.SampleRate);
-            sequencer = new MidiFileSequencer(synthesizer);
+            //synthesizer = new Synthesizer(soundFontPath, format.SampleRate);
+            sequencer = new MidiFileSequencer(new Synthesizer(soundFontPath, format.SampleRate));
 
             mutex = new object();
         }
+        //public static MidiSampleProvider GetInstance(string soundFontPath)
+        //{
+        //    if(instance == null)
+        //    {
+        //        return instance = new MidiSampleProvider(soundFontPath);
+        //    }
+        //    return instance;
+        //}
 
-        public void Play(MidiFile midiFile, bool loop)
+        public void Play(MidiFile midiFile)
         {
             lock (mutex)
             {
-                sequencer.Play(midiFile, loop);
+                sequencer.Play(midiFile, false);
             }
         }
 
@@ -61,6 +78,10 @@ namespace app
             {
                 sequencer.Stop();
             }
+        }
+        public bool IsPlaying()
+        {
+            return sequencer.EndOfSequence;
         }
 
         public int Read(float[] buffer, int offset, int count)

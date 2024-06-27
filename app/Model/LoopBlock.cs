@@ -10,5 +10,30 @@ namespace app.Model
     {
         public List<MusicBlock> Blocks { get; set; }
         public int RepeatCount { get; set; }
+
+        public void addLoopblock(MidiBuilder midiBuilder)
+        {
+            foreach (MusicBlock musicBlock in Blocks)
+            {
+                if (musicBlock != null)
+                {
+                    throw new Exception("MusicBlock is Leer");
+                }
+                else
+                {
+                    if (musicBlock is NoteBlock)
+                    {
+                        NoteBlock noteBlock = (NoteBlock)musicBlock;
+                        midiBuilder.addNote(noteBlock.Notename, noteBlock.MusicalTimeSpan);
+                    }
+                    else if (musicBlock is ChordBlock)
+                    {
+                        ChordBlock chordBlock = (ChordBlock)musicBlock;
+                        midiBuilder.addChord(chordBlock.Notenames, chordBlock.MusicalTimeSpan);
+                    }
+                }
+            }
+            midiBuilder.Repeat(Blocks.Count, RepeatCount);
+        }
     }
 }

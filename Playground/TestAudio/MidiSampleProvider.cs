@@ -13,17 +13,17 @@ public class MidiSampleProvider : ISampleProvider
 
     public MidiSampleProvider(string soundFontPath)
     {
-        synthesizer = new Synthesizer(soundFontPath, format.SampleRate);
-        sequencer = new MidiFileSequencer(synthesizer);
+        //synthesizer = new Synthesizer(soundFontPath, format.SampleRate);
+        sequencer = new MidiFileSequencer(new Synthesizer(soundFontPath, format.SampleRate));
 
         mutex = new object();
     }
 
-    public void Play(MidiFile midiFile, bool loop)
+    public void Play(MidiFile midiFile)
     {
         lock (mutex)
         {
-            sequencer.Play(midiFile, loop);
+            sequencer.Play(midiFile, false);
         }
     }
 
@@ -33,6 +33,10 @@ public class MidiSampleProvider : ISampleProvider
         {
             sequencer.Stop();
         }
+    }
+    public bool IsPlaying()
+    {
+        return sequencer.EndOfSequence;
     }
 
     public int Read(float[] buffer, int offset, int count)
