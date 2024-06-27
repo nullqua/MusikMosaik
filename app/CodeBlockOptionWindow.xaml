@@ -9,7 +9,7 @@
     <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
         <StackPanel>
             <StackPanel x:Name="panel" Orientation="Vertical"></StackPanel>
-            <Button Click="Button_Click"  Height="30">Fertig</Button>
+            <Button Height="30">Fertig</Button>
         </StackPanel>
     </ScrollViewer>
 </Window>

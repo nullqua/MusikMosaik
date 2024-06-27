@@ -26,18 +26,12 @@ namespace app
         private readonly double clickDelay = 200;
         private DateTime lastClickTime = DateTime.MinValue;
 
-        private DispatcherTimer clickTimer = new();
+        private DispatcherTimer clickTimer = new DispatcherTimer();
 
         private JObject metadata;
 
-        private List<MusicBlock> blocks = [];
+        private List<MusicBlock> blocks = new List<MusicBlock>();
         private int countButtons = 0;
-
-        private DirectoryInfo temporaryDirectory;
-
-        private string fullMidiPath;
-
-        private List<string> sectionMidiPaths = [];
 
         public MainWindow()
         {
@@ -45,41 +39,27 @@ namespace app
 
             string[] files = Directory.GetFiles(@"..\..\..\examples");
 
-            temporaryDirectory = Directory.CreateDirectory(Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString()));
-
             foreach (string file in files)
             {
-                try
+                Button button = new Button
                 {
-                    var extractPath = Path.Combine(temporaryDirectory.FullName, Path.GetFileNameWithoutExtension(file));
-                    Directory.CreateDirectory(extractPath);
+                    Content = Path.GetFileNameWithoutExtension(file)
+                };
 
-                    ZipFile.ExtractToDirectory(file, extractPath);
-
-                    Button button = new Button
-                    {
-                        Content = Path.GetFileNameWithoutExtension(file)
-                    };
-
-                    button.Click += (sender, e) =>
-                    {
-                        mainPanel.Children.Clear();
-                        ProcessArchive(Path.Combine(temporaryDirectory.FullName, Path.GetFileNameWithoutExtension(file)));
-
-                        foreach (var button in songPanel.Children.OfType<Button>())
-                        {
-                            button.IsEnabled = true;
-                        }
-
-                        var clickedButton = (Button)sender;
-                        clickedButton.IsEnabled = false;
-                    };
-                    songPanel.Children.Add(button);
-                }
-                catch (Exception ex)
+                button.Click += (sender, e) =>
                 {
-                    Debug.WriteLine(ex.Message);
-                }
+                    mainPanel.Children.Clear();
+                    OpenFile(file);
+
+                    foreach (var button in songPanel.Children.OfType<Button>())
+                    {
+                        button.IsEnabled = true;
+                    }
+
+                    var clickedButton = (Button)sender;
+                    clickedButton.IsEnabled = false;
+                };
+                songPanel.Children.Add(button);
             }
 
             TextBlock placeholder = new TextBlock
@@ -142,49 +122,53 @@ namespace app
             }
         }
 
-        private void ProcessArchive(string directoryPath)
+        private void OpenFile(string filePath)
         {
-            try
+            using (ZipArchive archive = ZipFile.OpenRead(filePath))
             {
-                var metadataEntry = Path.Combine(directoryPath, "metadata.json");
-
-                if (File.Exists(metadataEntry))
+                var metadataEntry = archive.Entries.FirstOrDefault(e => e.FullName == "metadata.json");
+                if (metadataEntry != null)
                 {
-                    string json = File.ReadAllText(metadataEntry);
-                    metadata = JObject.Parse(json);
+                    using (Stream stream = metadataEntry.Open())
+                    {
+                        using (StreamReader reader = new StreamReader(stream))
+                        {
+                            string json = reader.ReadToEnd();
+
+                            metadata = JObject.Parse(json);
+                            Debug.WriteLine(metadata);
+                        }
+                    }
                 }
 
-                fullMidiPath = Path.Combine(directoryPath, "score.mid");
+                var sectionDireories = archive.Entries
+                    .Where(e => e.FullName.StartsWith("sections/") && e.FullName.EndsWith("/"))
+                    .Select(e => e.FullName.Split('/')[1])
+                    .Distinct()
+                    .ToList();
 
-                var sectionDirectories = Directory.GetDirectories(Path.Combine(directoryPath, "sections"));
-                
-                foreach (var directory in sectionDirectories)
+
+                foreach (var directory in sectionDireories)
                 {
-                    var scorePng = Path.Combine(directoryPath, "sections", directory, "score.png");
-                    var scoreMidi = Path.Combine(directoryPath, "sections", directory, "score.mid");
-
-                    if (File.Exists(scorePng))
+                    var scorePngEntry = archive.Entries.FirstOrDefault(e => e.FullName == $"sections/{directory}/score.png");
+                    if (scorePngEntry != null)
                     {
-                        var bitmap = new BitmapImage();
-                        using (FileStream stream = File.OpenRead(scorePng))
+                        BitmapImage bitmap = new BitmapImage();
+                        using (Stream stream = scorePngEntry.Open())
                         {
+                            MemoryStream ms = new MemoryStream();
+                            stream.CopyTo(ms);
+                            ms.Position = 0;
+
                             bitmap.BeginInit();
-                            bitmap.StreamSource = stream;
+                            bitmap.StreamSource = ms;
                             bitmap.CacheOption = BitmapCacheOption.OnLoad;
                             bitmap.EndInit();
                         }
-                        bitmap.Freeze();
-
-                        sectionMidiPaths.Add(scoreMidi);
-
-                        AddRowToMainPanel(Path.GetFileName(directory), bitmap);
+                        AddRowToMainPanel(directory, bitmap);
                         countButtons++;
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.Message);
             }
         }
 
