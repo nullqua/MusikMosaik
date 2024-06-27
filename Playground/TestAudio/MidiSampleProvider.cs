@@ -19,11 +19,11 @@ public class MidiSampleProvider : ISampleProvider
         mutex = new object();
     }
 
-    public void Play(MidiFile midiFile, bool loop)
+    public void Play(MidiFile midiFile)
     {
         lock (mutex)
         {
-            sequencer.Play(midiFile, loop);
+            sequencer.Play(midiFile, false);
         }
     }
 
@@ -33,6 +33,10 @@ public class MidiSampleProvider : ISampleProvider
         {
             sequencer.Stop();
         }
+    }
+    public bool IsPlaying()
+    {
+        return sequencer.EndOfSequence;
     }
 
     public int Read(float[] buffer, int offset, int count)

@@ -264,9 +264,9 @@ namespace app
                 }
             }
             midiBuilder.buildMidi("test", 100);
-            //MidiPlayer.PlayMidi("test.mid");
+            MidiPlayer.MididateiAbspielen("test.mid");
             //MidiFileSequencer sequencer
-            MessageBox.Show("test.mid");
+            //MessageBox.Show("test.mid");
         }
 
         private void StackPanel_Drop(object sender, DragEventArgs e)
