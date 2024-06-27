@@ -13,6 +13,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using Melanchall.DryWetMidi.Interaction;
 
 namespace app
 {
@@ -419,10 +420,10 @@ namespace app
                     switch (type)
                     {
                         case "Note":
-                            blocks[section].Add(new NoteBlock(guid, "c", 60, 1, 4, 100));
+                            blocks[section].Add(new NoteBlock(guid, "c", 4, new MusicalTimeSpan(1,1), 100));
                             break;
                         case "Chord":
-                            blocks[section].Add(new ChordBlock(guid, "c", "h", 60, "major", 1, 4, 100));
+                            blocks[section].Add(new ChordBlock(guid, "c", "b", 4, "Major", new MusicalTimeSpan(1,1), 100));
                             break;
                     }
 

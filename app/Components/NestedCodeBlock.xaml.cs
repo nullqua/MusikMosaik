@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
+using Melanchall.DryWetMidi.Interaction;
 
 namespace app.Components
 {
@@ -89,10 +90,10 @@ namespace app.Components
                 switch (type)
                 {
                     case "Note":
-                        selfBlock.Blocks.Add(new NoteBlock(guid, "C", 0, 4, 4, 100));
+                        selfBlock.Blocks.Add(new NoteBlock(guid, "C", 0,new MusicalTimeSpan(1,1), 100));
                         break;
                     case "Chord":
-                        selfBlock.Blocks.Add(new ChordBlock(guid, "C", "E", 0, "Major", 4, 4, 100));
+                        selfBlock.Blocks.Add(new ChordBlock(guid, "C", "E", 0, "Major", new MusicalTimeSpan(1, 1), 100));
                         break;
                 }
 
