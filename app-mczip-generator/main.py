@@ -133,7 +133,7 @@ def create_archive(temp_path, output_path):
     excluded_files = ['converted.ly', 'converted.png', 'script.ly']
 
     with zipfile.ZipFile(output_path.with_suffix('.mczip'), 'w') as zipf:
-        zipf.write(temp_path / 'score.mid', 'score.midi')
+        zipf.write(temp_path / 'score.mid', 'score.mid')
         zipf.write(temp_path / 'metadata.json', 'metadata.json')
         for file_path in temp_path.glob('sections/**/*'):
             if file_path.name in excluded_files:
