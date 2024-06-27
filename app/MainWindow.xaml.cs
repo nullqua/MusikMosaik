@@ -129,7 +129,7 @@ namespace app
 
                     if (File.Exists(scorePngPath))
                     {
-                        BitmapImage bitmap = new BitmapImage();
+                        var bitmap = new BitmapImage();
                         using (FileStream stream = File.OpenRead(scorePngPath))
                         {
                             bitmap.BeginInit();
@@ -155,47 +155,47 @@ namespace app
 
         private void AddRowToMainPanel(string directoryName, BitmapImage image)
         {
-            Grid grid = new Grid
+            var grid = new Grid
             {
                 Margin = new Thickness(10)
             };
-            ColumnDefinition column1 = new ColumnDefinition
+            var column1 = new ColumnDefinition
             {
                 Width = new GridLength(100)
             };
-            ColumnDefinition column2 = new ColumnDefinition
+            var column2 = new ColumnDefinition
             {
                 Width = new GridLength(1, GridUnitType.Star)
             };
             grid.ColumnDefinitions.Add(column1);
             grid.ColumnDefinitions.Add(column2);
-            RowDefinition row1 = new RowDefinition
+            var row1 = new RowDefinition
             {
                 Height = new GridLength(1, GridUnitType.Star)
             };
-            RowDefinition row2 = new RowDefinition
+            var row2 = new RowDefinition
             {
                 Height = new GridLength(3, GridUnitType.Star)
             };
             grid.RowDefinitions.Add(row1);
             grid.RowDefinitions.Add(row2);
 
-            Button button1 = new Button { Content = "Play" };
+            var button1 = new Button { Content = "Play" };
             button1.Tag = sectionCount;
             Grid.SetColumn(button1, 0);
             Grid.SetRow(button1, 0);
             button1.Click += ScorePlay_Click;
 
-            Image imageView = new Image { Source = image };
+            var imageView = new Image { Source = image };
             Grid.SetColumn(imageView, 1);
             Grid.SetRow(imageView, 0);
 
-            Grid innerGrid = new Grid();
+            var innerGrid = new Grid();
             innerGrid.RowDefinitions.Add(new RowDefinition());
             innerGrid.RowDefinitions.Add(new RowDefinition());
-            Button button2 = new Button { Content = "Play" };
+            var button2 = new Button { Content = "Play" };
             button2.Tag = sectionCount;
-            Button button3 = new Button { Content = "Remove all" };
+            var button3 = new Button { Content = "Remove all" };
             button3.Tag = sectionCount;
             Grid.SetRow(button2, 0);
             Grid.SetRow(button3, 1);
@@ -204,13 +204,14 @@ namespace app
             Grid.SetColumn(innerGrid, 0);
             Grid.SetRow(innerGrid, 1);
             button2.Click += CodeBlockPlay_Click;
+            button3.Click += DeleteAll_Click;
 
-            ScrollViewer scrollViewer = new ScrollViewer
+            var scrollViewer = new ScrollViewer()
             {
                 VerticalScrollBarVisibility = ScrollBarVisibility.Disabled,
                 HorizontalScrollBarVisibility = ScrollBarVisibility.Auto
             };
-            StackPanel stackPanel = new StackPanel
+            var stackPanel = new StackPanel
             {
                 Orientation = Orientation.Horizontal,
                 MinHeight = 70
@@ -222,7 +223,7 @@ namespace app
             Grid.SetRow(scrollViewer, 1);
             scrollViewer.Content = stackPanel;
 
-            Border border = new Border
+            var border = new Border
             {
                 AllowDrop = true,
                 Width = 100,
@@ -232,7 +233,7 @@ namespace app
                 Background = Brushes.Transparent
             };
             border.Drop += CodeBlocksPlacement_Drop;
-            TextBlock textBlock = new TextBlock
+            var textBlock = new TextBlock
             {
                 FontWeight = FontWeights.Bold,
                 FontSize = 16,
@@ -272,19 +273,16 @@ namespace app
                 }
                 else
                 {
-                    if (musicBlock is NoteBlock)
+                    if (musicBlock is NoteBlock noteBlock)
                     {
-                        NoteBlock noteBlock = (NoteBlock)musicBlock;
                         midiBuilder.addNote(noteBlock.Notename, noteBlock.MusicalTimeSpan);
                     }
-                    else if (musicBlock is ChordBlock)
+                    else if (musicBlock is ChordBlock chordBlock)
                     {
-                        ChordBlock chordBlock = (ChordBlock)musicBlock;
                         midiBuilder.addChord(chordBlock.Notenames, chordBlock.MusicalTimeSpan);
                     }
-                    else if (musicBlock is LoopBlock)
+                    else if (musicBlock is LoopBlock loopBlock)
                     {
-                        LoopBlock loopBlock = (LoopBlock)musicBlock;
                         loopBlock.addLoopblock(midiBuilder);
                     }
                     else
@@ -293,15 +291,9 @@ namespace app
                     }
                 }
             }
+
             midiBuilder.buildMidi("test", 100);
             MidiPlayer.PlayMidiFile("test.mid");
-            //MidiFileSequencer sequencer
-            //MessageBox.Show("test.mid");
-        }
-
-        private void StackPanel_Drop(object sender, DragEventArgs e)
-        {
-            throw new NotImplementedException();
         }
 
         private void CodeBlocksPanel_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
