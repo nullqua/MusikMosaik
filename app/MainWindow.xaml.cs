@@ -66,6 +66,8 @@ namespace app
                     button.Click += (sender, e) =>
                     {
                         mainPanel.Children.Clear();
+                        blocks.Clear();
+
                         ProcessArchive(Path.Combine(tempDir.FullName, Path.GetFileNameWithoutExtension(file)));
 
                         for (var idx = 0; idx < sectionsMidiPath.Count; idx++)
@@ -355,7 +357,7 @@ namespace app
             e.Handled = true;
         }
 
-        private void CodeBlock_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        internal void CodeBlock_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (sender as Border == selected)
             {
@@ -387,7 +389,7 @@ namespace app
                     {
                         Width = 140,
                         Height = codeBlock.Height,
-                        Count = "5"
+                        Count = "x"
                     };
 
                     blocks[section].Add(new LoopBlock(guid, 5));
