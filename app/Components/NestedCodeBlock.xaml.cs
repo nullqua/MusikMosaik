@@ -34,7 +34,10 @@ namespace app.Components
             this.blocks = blocks;
             this.selected = selected;
 
+            outerBorder.BorderBrush = Brushes.Black;
+            outerBorder.BorderThickness = new Thickness(2);
             outerBorder.MouseLeftButtonDown += OuterBorder_MouseLeftButtonDown;
+            outerBorder.MouseRightButtonDown += OuterBorder_MouseRightButtonDown;
             outerBorder.Tag = new TagData(id, "Loop");
 
             clickTimer.Interval = TimeSpan.FromMilliseconds(500);
@@ -82,6 +85,7 @@ namespace app.Components
                     Tag = new TagData(guid, type)
                 };
                 newCodeBlock.MouseLeftButtonDown += InnerBlock_MouseLeftButtonDown;
+                newCodeBlock.MouseRightButtonDown += InnerBlock_MouseRightButtonDown;
                 newCodeBlock.BorderBrush = Brushes.Black;
                 newCodeBlock.BorderThickness = new Thickness(2);
 
@@ -140,8 +144,8 @@ namespace app.Components
 
             if (selected != null)
             {
-                outerBorder.BorderBrush = Brushes.Transparent;
-                outerBorder.BorderThickness = new Thickness(0);
+                outerBorder.BorderBrush = Brushes.Black;
+                outerBorder.BorderThickness = new Thickness(2);
 
                 selected = null;
             }
@@ -210,6 +214,25 @@ namespace app.Components
 
             lastClickTime = DateTime.Now;
         }
+
+        private void InnerBlock_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (sender as Border == selected)
+            {
+                var type = (sender as Border).Tag as TagData;
+
+                var selfBlock = blocks[sectionCount].Find(x => x.Id == id) as LoopBlock;
+
+                selfBlock.Blocks.Remove(selfBlock.Blocks.Find(x => x.Id == type.Id));
+
+                container.Children.Remove(sender as UIElement);
+                container.Width -= 70;
+            }
+            
+            e.Handled = true;
+        }
+
+        private void OuterBorder_MouseRightButtonDown(object sender, MouseButtonEventArgs e) => (Application.Current.MainWindow as MainWindow).CodeBlock_MouseRightButtonDown(outerBorder, e);
 
         private void StackPanel_SizeChanged(object sender, SizeChangedEventArgs e)
         {
