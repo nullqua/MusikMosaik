@@ -52,7 +52,7 @@ namespace app.Model
 
         }
 
-        private void FillNotenames()
+        public void FillNotenames()
         {
             int RootNoteInt = int.MaxValue;
             int OvertoneInt = int.MaxValue;

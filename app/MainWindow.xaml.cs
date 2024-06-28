@@ -257,7 +257,8 @@ namespace app
 
         private void ScorePlay_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Playing song");
+            MidiPlayer.PlayMidiFile(sectionsMidiPath[Convert.ToInt32((sender as Button).Tag)]);
+            //MessageBox.Show("Playing song");
         }
 
         private void CodeBlockPlay_Click(object sender, RoutedEventArgs e)
