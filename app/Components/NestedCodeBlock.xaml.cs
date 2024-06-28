@@ -90,10 +90,10 @@ namespace app.Components
                 switch (type)
                 {
                     case "Note":
-                        selfBlock.Blocks.Add(new NoteBlock(guid, "C", 0,new MusicalTimeSpan(1,1), 100));
+                        selfBlock.Blocks.Add(new NoteBlock(guid, "c", 4,new MusicalTimeSpan(1,1), 100));
                         break;
                     case "Chord":
-                        selfBlock.Blocks.Add(new ChordBlock(guid, "C", "E", 0, "Major", new MusicalTimeSpan(1, 1), 100));
+                        selfBlock.Blocks.Add(new ChordBlock(guid, "c", "e", 4, "Major", new MusicalTimeSpan(1, 1), 100));
                         break;
                 }
 

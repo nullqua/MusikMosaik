@@ -26,6 +26,9 @@ namespace app.Model
             this.Velocity = velocity;
             this.Notename = note + pitch.ToString();
         }
-
+        public void DoNotename()
+        {
+           this.Notename = this.Note + this.Pitch.ToString();
+        }
     }
 }

@@ -22,7 +22,7 @@ namespace app.Model
         {
             foreach (MusicBlock musicBlock in Blocks)
             {
-                if (musicBlock != null)
+                if (musicBlock == null)
                 {
                     throw new Exception("MusicBlock is Leer");
                 }
