@@ -17,12 +17,12 @@ namespace app.Model
         public int Velocity { get; set; }
         public string Notename { get; set; }
 
-        public NoteBlock(Guid id, string note, int pitch, int timenumerator, int timedenominator, int velocity)
+        public NoteBlock(Guid id, string note, int pitch, MusicalTimeSpan musicalTimeSpan, int velocity)
         {
             Id = id;
             this.Note = note;
             this.Pitch = pitch;
-            this.MusicalTimeSpan = new MusicalTimeSpan(timenumerator, timedenominator);
+            this.MusicalTimeSpan = musicalTimeSpan;
             this.Velocity = velocity;
             this.Notename = note + pitch.ToString();
         }

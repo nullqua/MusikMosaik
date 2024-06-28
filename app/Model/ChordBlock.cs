@@ -23,7 +23,7 @@ namespace app.Model
         private string[] AllNotes = {
             "c", "c#", "d", "d#", "e", "f", "f#", "g", "g#", "a", "a#", "b"
         };
-        string Mode;
+        public string Mode;
         /// <summary>
         /// GrundTon1, Terz, Quinte, GrundTon2, MelodieTon
         /// </summary>
@@ -33,14 +33,14 @@ namespace app.Model
         /// </summary>
         public int[] Notepitches = new int[5];
         public string[] NotenamesFinal;
-        public ChordBlock(Guid id, string basstone, string overtone, int pitch, string mode, int timenumerator, int timedenominatorint, int velocity)
+        public ChordBlock(Guid id, string basstone, string overtone, int pitch, string mode, MusicalTimeSpan musicalTimeSpan, int velocity)
         {
             Id = id;
             this.Basstone = basstone;
             this.Overtone = overtone;
             this.Pitch = pitch;
             this.Mode = mode;
-            MusicalTimeSpan = new MusicalTimeSpan(timenumerator, timedenominatorint);
+            MusicalTimeSpan = musicalTimeSpan;
             this.Velocity = velocity;
             for (int i = 0; i < Notepitches.Length; i++)
             {
