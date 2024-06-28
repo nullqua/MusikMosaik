@@ -10,7 +10,6 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="23"/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
@@ -68,6 +67,5 @@
                 </Border>
             </StackPanel>
         </Grid>
-        <Label Grid.Row="2">Statusleiste</Label>
     </Grid>
 </Window>
