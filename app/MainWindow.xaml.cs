@@ -255,6 +255,11 @@ namespace app
             mainPanel.Children.Add(grid);
         }
 
+        private void ScorePlayAll_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
         private void ScorePlay_Click(object sender, RoutedEventArgs e)
         {
             MidiPlayer.PlayMidiFile(sectionsMidiPath[Convert.ToInt32((sender as Button).Tag)]);
