@@ -257,7 +257,7 @@ namespace app
 
         private void ScorePlayAll_Click(object sender, RoutedEventArgs e)
         {
-
+            MidiPlayer.PlayMidiFile(fullMidiPath);
         }
 
         private void ScorePlay_Click(object sender, RoutedEventArgs e)
