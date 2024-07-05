@@ -1,55 +1,46 @@
 ﻿using Melanchall.DryWetMidi.Interaction;
-using Melanchall.DryWetMidi.MusicTheory;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.Design.Serialization;
 using System.Diagnostics;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Media.Animation;
-using System.Collections.Generic;
 
 namespace app.Model
 {
     public class ChordBlock : MusicBlock
     {
-        public int Velocity;
-        public MusicalTimeSpan MusicalTimeSpan;
-        public string Basstone;
-        public string Overtone;
-        public int Pitch;
-        private string[] AllNotes = {
+        public int velocity;
+        public MusicalTimeSpan musicalTimeSpan;
+        public string basstone;
+        public string overtone;
+        public int pitch;
+        private string[] allNotes = {
             "c", "c#", "d", "d#", "e", "f", "f#", "g", "g#", "a", "a#", "b"
         };
-        public string Mode;
+        public string mode;
         /// <summary>
         /// GrundTon1, Terz, Quinte, GrundTon2, MelodieTon
         /// </summary>
-        public string[] Notenames = new string[5];
+        public string[] notenames = new string[5];
         /// <summary>
         /// GrundTon1, Terz, Quinte, GrundTon2, MelodieTon
         /// </summary>
-        public int[] Notepitches = new int[5];
-        public string[] NotenamesFinal;
+        public int[] notepitches = new int[5];
+        public string[] notenamesFinal;
+
         public ChordBlock(Guid id, string basstone, string overtone, int pitch, string mode, MusicalTimeSpan musicalTimeSpan, int velocity)
         {
             Id = id;
-            this.Basstone = basstone;
-            this.Overtone = overtone;
-            this.Pitch = pitch;
-            this.Mode = mode;
-            MusicalTimeSpan = musicalTimeSpan;
-            this.Velocity = velocity;
-            for (int i = 0; i < Notepitches.Length; i++)
+            this.basstone = basstone;
+            this.overtone = overtone;
+            this.pitch = pitch;
+            this.mode = mode;
+            this.musicalTimeSpan = musicalTimeSpan;
+            this.velocity = velocity;
+
+            for (int i = 0; i < notepitches.Length; i++)
             {
-                Notepitches[i] = pitch;
+                notepitches[i] = pitch;
             }
+
             FillNotenames();
             IsNotenamestwice();
-
-
         }
 
         public void FillNotenames()
@@ -60,54 +51,61 @@ namespace app.Model
             int ChordQuint;
             int ChordOktav;
             bool RootNoteBool = false;
-            Notenames[4] = Overtone + Pitch.ToString();
-            for (int i = 0; i < AllNotes.Length; i++)
+
+            notenames[4] = overtone + pitch.ToString();
+
+            for (int i = 0; i < allNotes.Length; i++)
             {
-                if (Basstone == AllNotes[i])
+                if (basstone == allNotes[i])
                 {
                     RootNoteInt = i;
                 }
-                if (Overtone == AllNotes[i])
+
+                if (overtone == allNotes[i])
                 {
                     OvertoneInt = i;
                 }
             }
+
             if (RootNoteInt == int.MaxValue || OvertoneInt == int.MaxValue)
             {
                 throw new Exception("Basstone nicht richtig angegeben");
             }
-            if (Mode == "Major")
+
+            if (mode == "Major")
             {
-                Notenames[0] = Basstone;
+                notenames[0] = basstone;
                 ChordTerz = (RootNoteInt + 4) % 12;
-                Notenames[1] = AllNotes[ChordTerz % 12];
+                notenames[1] = allNotes[ChordTerz % 12];
                 ChordQuint = (RootNoteInt + 7) % 12;
-                Notenames[2] = AllNotes[ChordQuint % 12];
+                notenames[2] = allNotes[ChordQuint % 12];
                 ChordOktav = (RootNoteInt);
-                Notenames[3] = AllNotes[ChordOktav % 12];
-                Notenames[4] = Overtone;
+                notenames[3] = allNotes[ChordOktav % 12];
+                notenames[4] = overtone;
             }
-            else if (Mode == "Minor")
+            else if (mode == "Minor")
             {
-                Notenames[0] = Basstone;
+                notenames[0] = basstone;
                 ChordTerz = (RootNoteInt + 3) % 12;
-                Notenames[1] = AllNotes[ChordTerz % 12];
+                notenames[1] = allNotes[ChordTerz % 12];
                 ChordQuint = (RootNoteInt + 7) % 12;
-                Notenames[2] = AllNotes[ChordQuint % 12];
+                notenames[2] = allNotes[ChordQuint % 12];
                 ChordOktav = (RootNoteInt);
-                Notenames[3] = AllNotes[ChordOktav % 12];
-                Notenames[4] = Overtone;
+                notenames[3] = allNotes[ChordOktav % 12];
+                notenames[4] = overtone;
             }
             else
             {
                 throw new Exception("Mode wrong falue different to Major/Minor");
             }
+
             RootNoteInt -= 13;
-            Notepitches[0] = Notepitches[0] - 1;
+            notepitches[0] = notepitches[0] - 1;
+
             if (ChordTerz > OvertoneInt)
             {
                 ChordTerz -= 13;
-                Notepitches[1] = Notepitches[1] - 1;
+                notepitches[1] = notepitches[1] - 1;
                 RootNoteBool = true;
             }
             else if (ChordTerz == OvertoneInt)
@@ -118,10 +116,11 @@ namespace app.Model
             {
 
             }
+
             if (ChordQuint > OvertoneInt)
             {
                 ChordQuint -= 13;
-                Notepitches[2] = Notepitches[2] - 1;
+                notepitches[2] = notepitches[2] - 1;
                 RootNoteBool = true;
             }
             else if (ChordQuint == OvertoneInt)
@@ -132,10 +131,11 @@ namespace app.Model
             {
 
             }
+
             if (ChordOktav > OvertoneInt)
             {
                 ChordOktav -= 13;
-                Notepitches[3] = Notepitches[3] - 1;
+                notepitches[3] = notepitches[3] - 1;
                 RootNoteBool = true;
             }
             else if (ChordOktav == OvertoneInt)
@@ -146,22 +146,25 @@ namespace app.Model
             {
 
             }
+
             if (RootNoteBool)
             {
                 RootNoteInt -= 13;
-                Notepitches[0] = Notepitches[0] - 1;
+                notepitches[0] = notepitches[0] - 1;
             }
-            for (int i = 0; i < Notepitches.Length; i++)
+
+            for (int i = 0; i < notepitches.Length; i++)
             {
-                Notenames[i] = Notenames[i] + Notepitches[i].ToString();
+                notenames[i] = notenames[i] + notepitches[i].ToString();
             }
         }
 
         private void IsNotenamestwice()
         {
-            HashSet<string> set = new HashSet<string>();
-            List<string> uniqueElements = new List<string>();
-            foreach (string value in Notenames)
+            var set = new HashSet<string>();
+            var uniqueElements = new List<string>();
+
+            foreach (string value in notenames)
             {
                 if (!set.Add(value))
                 {
@@ -171,13 +174,14 @@ namespace app.Model
                     uniqueElements.Add(value);
                 }
             }
-            NotenamesFinal = uniqueElements.ToArray();
+            notenamesFinal = uniqueElements.ToArray();
         }
-        public void printNotenames()
+
+        public void PrintNotenames()
         {
-            for (int i = 0; i < NotenamesFinal.Length; i++)
+            for (int i = 0; i < notenamesFinal.Length; i++)
             {
-                Debug.WriteLine(NotenamesFinal[i]);
+                Debug.WriteLine(notenamesFinal[i]);
             }
         }
     }

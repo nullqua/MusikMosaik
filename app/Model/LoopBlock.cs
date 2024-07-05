@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace app.Model
+﻿namespace app.Model
 {
     public class LoopBlock : MusicBlock
     {
@@ -14,11 +8,11 @@ namespace app.Model
         public LoopBlock(Guid id, int repeatCount)
         {
             Id = id;
-            Blocks = new List<MusicBlock>();
+            Blocks = [];
             RepeatCount = repeatCount;
         }
 
-        public void addLoopblock(MidiBuilder midiBuilder)
+        public void AddLoopblock(MidiBuilder midiBuilder)
         {
             foreach (MusicBlock musicBlock in Blocks)
             {
@@ -28,15 +22,13 @@ namespace app.Model
                 }
                 else
                 {
-                    if (musicBlock is NoteBlock)
+                    if (musicBlock is NoteBlock noteBlock)
                     {
-                        NoteBlock noteBlock = (NoteBlock)musicBlock;
-                        midiBuilder.addNote(noteBlock.Notename, noteBlock.MusicalTimeSpan);
+                        midiBuilder.AddNote(noteBlock.Notename, noteBlock.MusicalTimeSpan);
                     }
-                    else if (musicBlock is ChordBlock)
+                    else if (musicBlock is ChordBlock chordBlock)
                     {
-                        ChordBlock chordBlock = (ChordBlock)musicBlock;
-                        midiBuilder.addChord(chordBlock.Notenames, chordBlock.MusicalTimeSpan);
+                        midiBuilder.AddChord(chordBlock.notenames, chordBlock.musicalTimeSpan);
                     }
                 }
             }

@@ -1,20 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace app
+﻿namespace app
 {
-    internal class TagData
+    internal class TagData(Guid id, string type)
     {
-        public Guid Id { get; set; }
-        public string Type { get; set; }
-
-        public TagData(Guid id, string type)
-        {
-            Id = id;
-            Type = type;
-        }
+        public Guid Id { get; set; } = id;
+        public string Type { get; set; } = type;
     }
 }

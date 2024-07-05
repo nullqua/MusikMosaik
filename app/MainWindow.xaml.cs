@@ -1,12 +1,9 @@
 ﻿using app.Components;
 using app.Model;
-using MeltySynth;
 using Newtonsoft.Json.Linq;
-using System;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
-using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -17,9 +14,6 @@ using Melanchall.DryWetMidi.Interaction;
 
 namespace app
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         private UIElement selected;
@@ -27,15 +21,14 @@ namespace app
 
         private readonly double clickDelay = 200;
         private DateTime lastClickTime = DateTime.MinValue;
-
-        private DispatcherTimer clickTimer = new DispatcherTimer();
+        private readonly DispatcherTimer clickTimer = new();
 
         private JObject metadata;
 
         private List<List<MusicBlock>> blocks = [];
 
         private string fullMidiPath;
-        private List<string> sectionsMidiPath = [];
+        private readonly List<string> sectionsMidiPath = [];
         
         private int sectionCount = 0;
 
@@ -59,7 +52,7 @@ namespace app
 
                     ZipFile.ExtractToDirectory(file, extractPath);
 
-                    Button button = new Button
+                    var button = new Button
                     {
                         Content = Path.GetFileNameWithoutExtension(file)
                     };
@@ -92,7 +85,7 @@ namespace app
                 }
             }
 
-            TextBlock placeholder = new TextBlock
+            var placeholder = new TextBlock
             {
                 Text = "Click a song to load",
                 HorizontalAlignment = HorizontalAlignment.Center,
@@ -183,8 +176,11 @@ namespace app
             grid.RowDefinitions.Add(row1);
             grid.RowDefinitions.Add(row2);
 
-            var button1 = new Button { Content = "Play" };
-            button1.Tag = sectionCount;
+            var button1 = new Button
+            {
+                Content = "Play",
+                Tag = sectionCount
+            };
             Grid.SetColumn(button1, 0);
             Grid.SetRow(button1, 0);
             button1.Click += ScorePlay_Click;
@@ -196,10 +192,16 @@ namespace app
             var innerGrid = new Grid();
             innerGrid.RowDefinitions.Add(new RowDefinition());
             innerGrid.RowDefinitions.Add(new RowDefinition());
-            var button2 = new Button { Content = "Play" };
-            button2.Tag = sectionCount;
-            var button3 = new Button { Content = "Remove all" };
-            button3.Tag = sectionCount;
+            var button2 = new Button
+            {
+                Content = "Play",
+                Tag = sectionCount
+            };
+            var button3 = new Button
+            {
+                Content = "Remove all",
+                Tag = sectionCount
+            };
             Grid.SetRow(button2, 0);
             Grid.SetRow(button3, 1);
             innerGrid.Children.Add(button2);
@@ -263,36 +265,33 @@ namespace app
         private void ScorePlay_Click(object sender, RoutedEventArgs e)
         {
             MidiPlayer.PlayMidiFile(sectionsMidiPath[Convert.ToInt32((sender as Button).Tag)]);
-            //MessageBox.Show("Playing song");
         }
 
         private void CodeBlockPlay_Click(object sender, RoutedEventArgs e)
         {
             var section = Convert.ToInt32((sender as Button).Tag);
 
-            Debug.WriteLine(section.ToString());
+            var midiBuilder = new MidiBuilder();
 
-            MidiBuilder midiBuilder = new();
-
-            foreach (MusicBlock musicBlock in blocks[section])
+            foreach (var musicBlock in blocks[section])
             {
                 if (musicBlock == null)
                 {
-                    throw new Exception("MusicBlock is Leer");
+                    throw new Exception("MusicBlock is empty");
                 }
                 else
                 {
                     if (musicBlock is NoteBlock noteBlock)
                     {
-                        midiBuilder.addNote(noteBlock.Notename, noteBlock.MusicalTimeSpan);
+                        midiBuilder.AddNote(noteBlock.Notename, noteBlock.MusicalTimeSpan);
                     }
                     else if (musicBlock is ChordBlock chordBlock)
                     {
-                        midiBuilder.addChord(chordBlock.Notenames, chordBlock.MusicalTimeSpan);
+                        midiBuilder.AddChord(chordBlock.notenames, chordBlock.musicalTimeSpan);
                     }
                     else if (musicBlock is LoopBlock loopBlock)
                     {
-                        loopBlock.addLoopblock(midiBuilder);
+                        loopBlock.AddLoopblock(midiBuilder);
                     }
                     else
                     {
@@ -301,7 +300,7 @@ namespace app
                 }
             }
 
-            midiBuilder.buildMidi("test", 100);
+            midiBuilder.BuildMidi("test", 100);
             MidiPlayer.PlayMidiFile("test.mid");
         }
 

@@ -1,11 +1,4 @@
-﻿using Melanchall.DryWetMidi.Core;
-using Melanchall.DryWetMidi.Common;
-using Melanchall.DryWetMidi.Interaction;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Melanchall.DryWetMidi.Interaction;
 
 namespace app.Model
 {
@@ -20,15 +13,15 @@ namespace app.Model
         public NoteBlock(Guid id, string note, int pitch, MusicalTimeSpan musicalTimeSpan, int velocity)
         {
             Id = id;
-            this.Note = note;
-            this.Pitch = pitch;
-            this.MusicalTimeSpan = musicalTimeSpan;
-            this.Velocity = velocity;
-            this.Notename = note + pitch.ToString();
+            Note = note;
+            Pitch = pitch;
+            MusicalTimeSpan = musicalTimeSpan;
+            Velocity = velocity;
+            Notename = note + pitch.ToString();
         }
         public void DoNotename()
         {
-           this.Notename = this.Note + this.Pitch.ToString();
+           Notename = Note + Pitch.ToString();
         }
     }
 }

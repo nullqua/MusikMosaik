@@ -1,5 +1,4 @@
 ﻿using app.Model;
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -9,9 +8,7 @@ using Melanchall.DryWetMidi.Interaction;
 
 namespace app.Components
 {
-    /// <summary>
-    /// Interaction logic for NestedCodeBlock.xaml
-    /// </summary>
+
     public partial class NestedCodeBlock : UserControl
     {
         private List<List<MusicBlock>> blocks;
@@ -23,7 +20,7 @@ namespace app.Components
         private UIElement lastClickedInnerBlock;
 
         private DateTime lastClickTime = DateTime.MinValue;
-        private DispatcherTimer clickTimer = new();
+        private readonly DispatcherTimer clickTimer = new();
 
         public NestedCodeBlock(Guid id, int sectionCount, ref List<List<MusicBlock>> blocks, ref UIElement selected)
         {
@@ -102,7 +99,6 @@ namespace app.Components
                 }
 
                 container.Children.Insert(container.Children.Count - 1, newCodeBlock);
-
                 container.Width += 70;
 
                 e.Handled = true;
@@ -115,8 +111,6 @@ namespace app.Components
 
             clickTimer.Tick -= InnerBlock_ClickTimer_Click;
             clickTimer.Tick += OuterBorder_ClickTimer_Click;
-
-            Debug.WriteLine("mark inner block as selected");
 
             var elem = lastClickedInnerBlock as Border;
 
@@ -139,8 +133,6 @@ namespace app.Components
         private void OuterBorder_ClickTimer_Click(object sender, EventArgs e)
         {
             clickTimer.Stop();
-
-            Debug.WriteLine("mark loop block as selected");
 
             if (selected != null)
             {
@@ -166,11 +158,10 @@ namespace app.Components
             if (clickSpan.TotalMilliseconds < 500)
             {
                 clickTimer.Stop();
-                Debug.WriteLine("double click, open inner block option dialog");
 
                 var selfBlock = blocks[sectionCount].Find(x => x.Id == id) as LoopBlock;
 
-                var res = selfBlock.Blocks.Find(x => x.Id == type.Id) as MusicBlock;
+                var res = selfBlock.Blocks.Find(x => x.Id == type.Id);
 
                 var optionWindow = new CodeBlockOptionWindow(ref res);
                 optionWindow.ShowDialog();
@@ -199,7 +190,6 @@ namespace app.Components
             if (clickSpan.TotalMilliseconds < 500)
             {
                 clickTimer.Stop();
-                Debug.WriteLine("double click, open loop block option dialog");
 
                 var res = blocks[sectionCount].Find(x => x.Id == id) as MusicBlock;
                 
