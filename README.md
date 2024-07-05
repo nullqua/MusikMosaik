@@ -1,1 +1,1 @@
-# musikinformatik
+# musikinformatik - MusikMosaik
