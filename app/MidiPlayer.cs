@@ -3,7 +3,9 @@ using NAudio.Wave;
 
 namespace app
 {
-
+    /// <summary>
+    /// Plays an exiting MIDI file.
+    /// </summary>
     public class MidiPlayer
     {
         public static async void PlayMidiFile(string mididatei)
@@ -28,13 +30,18 @@ namespace app
             });
         }
     }
-    public class MidiSampleProvider(string soundFontPath) : ISampleProvider
+
+    /// <summary>
+    /// Implements a sample provider for MIDI.
+    /// </summary>
+    /// <param name="soundFontPath">The path to the sound font.</param>
+    internal class MidiSampleProvider(string soundFontPath) : ISampleProvider
     {
         private static readonly WaveFormat format = WaveFormat.CreateIeeeFloatWaveFormat(44100, 2);
 
-        private MidiFileSequencer sequencer = new MidiFileSequencer(new Synthesizer(soundFontPath, format.SampleRate));
+        private readonly MidiFileSequencer sequencer = new(new Synthesizer(soundFontPath, format.SampleRate));
 
-        private object mutex = new object();
+        private readonly object mutex = new();
 
         public void Play(MidiFile midiFile)
         {
@@ -51,6 +58,7 @@ namespace app
                 sequencer.Stop();
             }
         }
+
         public bool IsPlaying()
         {
             return sequencer.EndOfSequence;

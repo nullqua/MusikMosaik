@@ -2,6 +2,9 @@
 using Melanchall.DryWetMidi.Interaction;
 using Melanchall.DryWetMidi.Core;
 
+/// <summary>
+/// Builds a MIDI file.
+/// </summary>
 public class MidiBuilder
 {
     private readonly PatternBuilder patternBuilder = new();
@@ -21,6 +24,7 @@ public class MidiBuilder
         }
         patternBuilder.Chord(notes, musicalTimeSpan);
     }
+
     public void Repeat(int actionsCount, int repeat)
     {
         patternBuilder.Repeat(actionsCount, repeat);
