@@ -22,15 +22,15 @@ namespace app.Model
         public string[] FinalNoteNames { get; private set; }
 
         /// <summary>
-        /// Creates a new instance of a chord block
+        /// Creates a new instance of a chord block.
         /// </summary>
-        /// <param name="id">Unique identifier of code block</param>
-        /// <param name="basstone">The bass tone</param>
-        /// <param name="overtone">The over tone</param>
-        /// <param name="pitch">The pitch</param>
-        /// <param name="mode">The scale (major or minor)</param>
-        /// <param name="musicalTimeSpan">The time span as fraction</param>
-        /// <param name="velocity">The velocity</param>
+        /// <param name="id">Unique identifier of code block.</param>
+        /// <param name="basstone">The bass tone.</param>
+        /// <param name="overtone">The over tone.</param>
+        /// <param name="pitch">The pitch.</param>
+        /// <param name="mode">The scale (major or minor).</param>
+        /// <param name="musicalTimeSpan">The time span as fraction.</param>
+        /// <param name="velocity">The velocity.</param>
         public ChordBlock(Guid id, string basstone, string overtone, int pitch, string mode, MusicalTimeSpan musicalTimeSpan, int velocity)
         {
             Id = id;

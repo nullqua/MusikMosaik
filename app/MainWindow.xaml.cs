@@ -296,7 +296,7 @@ namespace app
                 {
                     if (musicBlock is NoteBlock noteBlock)
                     {
-                        midiBuilder.AddNote(noteBlock.Notename, noteBlock.MusicalTimeSpan);
+                        midiBuilder.AddNote(noteBlock.NoteName, noteBlock.TimeSpan);
                     }
                     else if (musicBlock is ChordBlock chordBlock)
                     {
@@ -304,7 +304,7 @@ namespace app
                     }
                     else if (musicBlock is LoopBlock loopBlock)
                     {
-                        loopBlock.AddLoopblock(midiBuilder);
+                        loopBlock.BuildMidiSequence(midiBuilder);
                     }
                     else
                     {

@@ -224,15 +224,15 @@ namespace app
                 }
                 if (noteLength != null)
                 {
-                    if (noteLength.Text == "ganze Note") { noteBlock.MusicalTimeSpan = new MusicalTimeSpan(1, 1); }
-                    else if (noteLength.Text == "halbe Note") { noteBlock.MusicalTimeSpan = new MusicalTimeSpan(1, 2); }
-                    else if (noteLength.Text == "viertel Note") { noteBlock.MusicalTimeSpan = new MusicalTimeSpan(1, 4); }
-                    else if (noteLength.Text == "punktierte viertel Note") { noteBlock.MusicalTimeSpan = new MusicalTimeSpan(3, 8); }
-                    else if (noteLength.Text == "achtel Note") { noteBlock.MusicalTimeSpan = new MusicalTimeSpan(1, 8); }
-                    else if (noteLength.Text == "punktierte achtel Note") { noteBlock.MusicalTimeSpan = new MusicalTimeSpan(3, 16); }
-                    else if (noteLength.Text == "16tel Note") { noteBlock.MusicalTimeSpan = new MusicalTimeSpan(1, 16); }
+                    if (noteLength.Text == "ganze Note") { noteBlock.TimeSpan = new MusicalTimeSpan(1, 1); }
+                    else if (noteLength.Text == "halbe Note") { noteBlock.TimeSpan = new MusicalTimeSpan(1, 2); }
+                    else if (noteLength.Text == "viertel Note") { noteBlock.TimeSpan = new MusicalTimeSpan(1, 4); }
+                    else if (noteLength.Text == "punktierte viertel Note") { noteBlock.TimeSpan = new MusicalTimeSpan(3, 8); }
+                    else if (noteLength.Text == "achtel Note") { noteBlock.TimeSpan = new MusicalTimeSpan(1, 8); }
+                    else if (noteLength.Text == "punktierte achtel Note") { noteBlock.TimeSpan = new MusicalTimeSpan(3, 16); }
+                    else if (noteLength.Text == "16tel Note") { noteBlock.TimeSpan = new MusicalTimeSpan(1, 16); }
                 }
-                noteBlock.DoNotename();
+                noteBlock.BuildNote();
             }
             else if (musicBlock is ChordBlock chordBlock)
             {
