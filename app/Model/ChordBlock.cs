@@ -3,7 +3,7 @@
 namespace app.Model
 {
     /// <summary>
-    /// 
+    /// Represent a musical chord block.
     /// </summary>
     public class ChordBlock : MusicBlock
     {
@@ -22,15 +22,15 @@ namespace app.Model
         public string[] FinalNoteNames { get; private set; }
 
         /// <summary>
-        /// 
+        /// Creates a new instance of a chord block
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="basstone"></param>
-        /// <param name="overtone"></param>
-        /// <param name="pitch"></param>
-        /// <param name="mode"></param>
-        /// <param name="musicalTimeSpan"></param>
-        /// <param name="velocity"></param>
+        /// <param name="id">Unique identifier of code block</param>
+        /// <param name="basstone">The bass tone</param>
+        /// <param name="overtone">The over tone</param>
+        /// <param name="pitch">The pitch</param>
+        /// <param name="mode">The scale (major or minor)</param>
+        /// <param name="musicalTimeSpan">The time span as fraction</param>
+        /// <param name="velocity">The velocity</param>
         public ChordBlock(Guid id, string basstone, string overtone, int pitch, string mode, MusicalTimeSpan musicalTimeSpan, int velocity)
         {
             Id = id;
@@ -46,15 +46,15 @@ namespace app.Model
                 NotePitches[i] = pitch;
             }
 
-            FillNoteNames();
-            CheckNoteNamesTwice();
+            GenerateChordNotesAndPitches();
+            FinalNoteNames = NoteNames.Distinct().ToArray();
+
         }
 
         /// <summary>
-        /// 
+        /// Generates and adjusts the note names and pitches for the chord based on its characteristics.
         /// </summary>
-        /// <exception cref="Exception"></exception>
-        public void FillNoteNames()
+        public void GenerateChordNotesAndPitches()
         {
             int RootNoteInt = int.MaxValue;
             int OvertoneInt = int.MaxValue;
@@ -157,24 +157,6 @@ namespace app.Model
             {
                 NoteNames[i] = NoteNames[i] + NotePitches[i].ToString();
             }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        private void CheckNoteNamesTwice()
-        {
-            var set = new HashSet<string>();
-            var uniqueElements = new List<string>();
-
-            foreach (string value in NoteNames)
-            {
-                if (set.Add(value))
-                {
-                    uniqueElements.Add(value);
-                }
-            }
-            FinalNoteNames = [.. uniqueElements];
         }
     }
 }

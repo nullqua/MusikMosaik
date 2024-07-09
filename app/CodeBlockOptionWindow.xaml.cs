@@ -292,7 +292,7 @@ namespace app
                     if (scale.Text == "Dur") { chordBlock.Mode = "Major"; }
                     else if (scale.Text == "Moll") { chordBlock.Mode = "Minor"; }
                 }
-                chordBlock.FillNoteNames();
+                chordBlock.GenerateChordNotesAndPitches();
             }
             Close();
         }
