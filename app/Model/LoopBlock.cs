@@ -28,7 +28,7 @@
                     }
                     else if (musicBlock is ChordBlock chordBlock)
                     {
-                        midiBuilder.AddChord(chordBlock.notenames, chordBlock.musicalTimeSpan);
+                        midiBuilder.AddChord(chordBlock.NoteNames, chordBlock.TimeSpan);
                     }
                 }
             }
