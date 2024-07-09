@@ -7,6 +7,9 @@ using Melanchall.DryWetMidi.Interaction;
 
 namespace app
 {
+    /// <summary>
+    /// This class provides a window for configuring the properties of a code block.
+    /// </summary>
     public partial class CodeBlockOptionWindow : Window
     {
         private MusicBlock musicBlock;
@@ -18,6 +21,9 @@ namespace app
         private readonly ComboBox noteLength;
         private readonly ComboBox scale;
 
+        /// <summary>
+        /// Initializes the UI based on the type of the music block.
+        /// </summary>
         public CodeBlockOptionWindow(ref MusicBlock musicBlock)
         {
             InitializeComponent();
@@ -168,11 +174,17 @@ namespace app
             panel.Children.Add(stackPanel);
         }
 
+        /// <summary>
+        /// Makes sure only numbers can be entered.
+        /// </summary>
         private void TextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             e.Handled = Regex.IsMatch(e.Text, "[^0-9]+");
         }
 
+        /// <summary>
+        /// Processes the entered values.
+        /// </summary>
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             if (musicBlock is LoopBlock loopBlock)
@@ -212,75 +224,75 @@ namespace app
                 }
                 if (noteLength != null)
                 {
-                    if (noteLength.Text == "ganze Note") { noteBlock.MusicalTimeSpan = new MusicalTimeSpan(1, 1); }
-                    else if (noteLength.Text == "halbe Note") { noteBlock.MusicalTimeSpan = new MusicalTimeSpan(1, 2); }
-                    else if (noteLength.Text == "viertel Note") { noteBlock.MusicalTimeSpan = new MusicalTimeSpan(1, 4); }
-                    else if (noteLength.Text == "punktierte viertel Note") { noteBlock.MusicalTimeSpan = new MusicalTimeSpan(3, 8); }
-                    else if (noteLength.Text == "achtel Note") { noteBlock.MusicalTimeSpan = new MusicalTimeSpan(1, 8); }
-                    else if (noteLength.Text == "punktierte achtel Note") { noteBlock.MusicalTimeSpan = new MusicalTimeSpan(3, 16); }
-                    else if (noteLength.Text == "16tel Note") { noteBlock.MusicalTimeSpan = new MusicalTimeSpan(1, 16); }
+                    if (noteLength.Text == "ganze Note") { noteBlock.TimeSpan = new MusicalTimeSpan(1, 1); }
+                    else if (noteLength.Text == "halbe Note") { noteBlock.TimeSpan = new MusicalTimeSpan(1, 2); }
+                    else if (noteLength.Text == "viertel Note") { noteBlock.TimeSpan = new MusicalTimeSpan(1, 4); }
+                    else if (noteLength.Text == "punktierte viertel Note") { noteBlock.TimeSpan = new MusicalTimeSpan(3, 8); }
+                    else if (noteLength.Text == "achtel Note") { noteBlock.TimeSpan = new MusicalTimeSpan(1, 8); }
+                    else if (noteLength.Text == "punktierte achtel Note") { noteBlock.TimeSpan = new MusicalTimeSpan(3, 16); }
+                    else if (noteLength.Text == "16tel Note") { noteBlock.TimeSpan = new MusicalTimeSpan(1, 16); }
                 }
-                noteBlock.DoNotename();
+                noteBlock.BuildNote();
             }
             else if (musicBlock is ChordBlock chordBlock)
             {
                 if (tone1 != null)
                 {
-                    if (tone1.Text == "H#/C") { chordBlock.basstone = "c"; }
-                    else if (tone1.Text == "C#/Db") { chordBlock.basstone = "c#"; }
-                    else if (tone1.Text == "D") { chordBlock.basstone = "d"; }
-                    else if (tone1.Text == "D#/Eb") { chordBlock.basstone = "d#"; }
-                    else if (tone1.Text == "E/Fb") { chordBlock.basstone = "e"; }
-                    else if (tone1.Text == "E#/F") { chordBlock.basstone = "f"; }
-                    else if (tone1.Text == "F#/Gb") { chordBlock.basstone = "f#"; }
-                    else if (tone1.Text == "G") { chordBlock.basstone = "g"; }
-                    else if (tone1.Text == "G#/Ab") { chordBlock.basstone = "g#"; }
-                    else if (tone1.Text == "A") { chordBlock.basstone = "a"; }
-                    else if (tone1.Text == "A#/B") { chordBlock.basstone = "a#"; }
-                    else if (tone1.Text == "H/Cb") { chordBlock.basstone = "b"; }
+                    if (tone1.Text == "H#/C") { chordBlock.Basstone = "c"; }
+                    else if (tone1.Text == "C#/Db") { chordBlock.Basstone = "c#"; }
+                    else if (tone1.Text == "D") { chordBlock.Basstone = "d"; }
+                    else if (tone1.Text == "D#/Eb") { chordBlock.Basstone = "d#"; }
+                    else if (tone1.Text == "E/Fb") { chordBlock.Basstone = "e"; }
+                    else if (tone1.Text == "E#/F") { chordBlock.Basstone = "f"; }
+                    else if (tone1.Text == "F#/Gb") { chordBlock.Basstone = "f#"; }
+                    else if (tone1.Text == "G") { chordBlock.Basstone = "g"; }
+                    else if (tone1.Text == "G#/Ab") { chordBlock.Basstone = "g#"; }
+                    else if (tone1.Text == "A") { chordBlock.Basstone = "a"; }
+                    else if (tone1.Text == "A#/B") { chordBlock.Basstone = "a#"; }
+                    else if (tone1.Text == "H/Cb") { chordBlock.Basstone = "b"; }
                 }
                 if (tone2 != null)
                 {
-                    if (tone2.Text == "H#/C") { chordBlock.overtone = "c"; }
-                    else if (tone2.Text == "C#/Db") { chordBlock.overtone = "c#"; }
-                    else if (tone2.Text == "D") { chordBlock.overtone = "d"; }
-                    else if (tone2.Text == "D#/Eb") { chordBlock.overtone = "d#"; }
-                    else if (tone2.Text == "E/Fb") { chordBlock.overtone = "e"; }
-                    else if (tone2.Text == "E#/F") { chordBlock.overtone = "f"; }
-                    else if (tone2.Text == "F#/Gb") { chordBlock.overtone = "f#"; }
-                    else if (tone2.Text == "G") { chordBlock.overtone = "g"; }
-                    else if (tone2.Text == "G#/Ab") { chordBlock.overtone = "g#"; }
-                    else if (tone2.Text == "A") { chordBlock.overtone = "a"; }
-                    else if (tone2.Text == "A#/B") { chordBlock.overtone = "a#"; }
-                    else if (tone2.Text == "H/Cb") { chordBlock.overtone = "b"; }
+                    if (tone2.Text == "H#/C") { chordBlock.Overtone = "c"; }
+                    else if (tone2.Text == "C#/Db") { chordBlock.Overtone = "c#"; }
+                    else if (tone2.Text == "D") { chordBlock.Overtone = "d"; }
+                    else if (tone2.Text == "D#/Eb") { chordBlock.Overtone = "d#"; }
+                    else if (tone2.Text == "E/Fb") { chordBlock.Overtone = "e"; }
+                    else if (tone2.Text == "E#/F") { chordBlock.Overtone = "f"; }
+                    else if (tone2.Text == "F#/Gb") { chordBlock.Overtone = "f#"; }
+                    else if (tone2.Text == "G") { chordBlock.Overtone = "g"; }
+                    else if (tone2.Text == "G#/Ab") { chordBlock.Overtone = "g#"; }
+                    else if (tone2.Text == "A") { chordBlock.Overtone = "a"; }
+                    else if (tone2.Text == "A#/B") { chordBlock.Overtone = "a#"; }
+                    else if (tone2.Text == "H/Cb") { chordBlock.Overtone = "b"; }
                 }
                 if (pitch != null)
                 {
-                    if (pitch.Text == "1 (tiefste Oktave)") { chordBlock.pitch = 1; }
-                    else if (pitch.Text == "2") { chordBlock.pitch = 2; }
-                    else if (pitch.Text == "3") { chordBlock.pitch = 3; }
-                    else if (pitch.Text == "4 (Mitte der Klaviatur)") { chordBlock.pitch = 4; }
-                    else if (pitch.Text == "5") { chordBlock.pitch = 5; }
-                    else if (pitch.Text == "6") { chordBlock.pitch = 6; }
-                    else if (pitch.Text == "7") { chordBlock.pitch = 7; }
-                    else if (pitch.Text == "8 (höchste Oktave)") { chordBlock.pitch = 8; }
+                    if (pitch.Text == "1 (tiefste Oktave)") { chordBlock.Pitch = 1; }
+                    else if (pitch.Text == "2") { chordBlock.Pitch = 2; }
+                    else if (pitch.Text == "3") { chordBlock.Pitch = 3; }
+                    else if (pitch.Text == "4 (Mitte der Klaviatur)") { chordBlock.Pitch = 4; }
+                    else if (pitch.Text == "5") { chordBlock.Pitch = 5; }
+                    else if (pitch.Text == "6") { chordBlock.Pitch = 6; }
+                    else if (pitch.Text == "7") { chordBlock.Pitch = 7; }
+                    else if (pitch.Text == "8 (höchste Oktave)") { chordBlock.Pitch = 8; }
                 }
                 if (noteLength != null)
                 {
-                    if (noteLength.Text == "ganze Note") { chordBlock.musicalTimeSpan = new MusicalTimeSpan(1, 1); }
-                    else if (noteLength.Text == "halbe Note") { chordBlock.musicalTimeSpan = new MusicalTimeSpan(1, 2); }
-                    else if (noteLength.Text == "viertel Note") { chordBlock.musicalTimeSpan = new MusicalTimeSpan(1, 4); }
-                    else if (noteLength.Text == "punktierte viertel Note") { chordBlock.musicalTimeSpan = new MusicalTimeSpan(3, 8); }
-                    else if (noteLength.Text == "achtel Note") { chordBlock.musicalTimeSpan = new MusicalTimeSpan(1, 8); }
-                    else if (noteLength.Text == "punktierte achtel Note") { chordBlock.musicalTimeSpan = new MusicalTimeSpan(3, 16); }
-                    else if (noteLength.Text == "16tel Note") { chordBlock.musicalTimeSpan = new MusicalTimeSpan(1, 16); }
+                    if (noteLength.Text == "ganze Note") { chordBlock.TimeSpan = new MusicalTimeSpan(1, 1); }
+                    else if (noteLength.Text == "halbe Note") { chordBlock.TimeSpan = new MusicalTimeSpan(1, 2); }
+                    else if (noteLength.Text == "viertel Note") { chordBlock.TimeSpan = new MusicalTimeSpan(1, 4); }
+                    else if (noteLength.Text == "punktierte viertel Note") { chordBlock.TimeSpan = new MusicalTimeSpan(3, 8); }
+                    else if (noteLength.Text == "achtel Note") { chordBlock.TimeSpan = new MusicalTimeSpan(1, 8); }
+                    else if (noteLength.Text == "punktierte achtel Note") { chordBlock.TimeSpan = new MusicalTimeSpan(3, 16); }
+                    else if (noteLength.Text == "16tel Note") { chordBlock.TimeSpan = new MusicalTimeSpan(1, 16); }
                 }
                 if (scale != null)
                 {
-                    if (scale.Text == "Dur") { chordBlock.mode = "Major"; }
-                    else if (scale.Text == "Moll") { chordBlock.mode = "Minor"; }
+                    if (scale.Text == "Dur") { chordBlock.Mode = "Major"; }
+                    else if (scale.Text == "Moll") { chordBlock.Mode = "Minor"; }
                 }
-                chordBlock.FillNotenames();
+                chordBlock.GenerateChordNotesAndPitches();
             }
             Close();
         }

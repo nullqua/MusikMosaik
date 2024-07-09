@@ -8,7 +8,6 @@ using Melanchall.DryWetMidi.Interaction;
 
 namespace app.Components
 {
-
     public partial class NestedCodeBlock : UserControl
     {
         private List<List<MusicBlock>> blocks;
@@ -51,7 +50,10 @@ namespace app.Components
             get => (string)GetValue(CountProperty);
             set => SetValue(CountProperty, value);
         }
-        
+
+        /// <summary>
+        /// Adds a code block to the stack panel and data structure when it is dropped.
+        /// </summary>
         private void Container_Drop(object sender, DragEventArgs e)
         {
             if ((e.Data.GetData(typeof(Border)) as Border).Tag.Equals("Loop"))
@@ -105,6 +107,9 @@ namespace app.Components
             }
         }
 
+        /// <summary>
+        /// Ensures that double-clicking on a code block works.
+        /// </summary>
         private void InnerBlock_ClickTimer_Click(object sender, EventArgs e)
         {
             clickTimer.Stop();

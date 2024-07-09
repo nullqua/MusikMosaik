@@ -14,6 +14,10 @@ using Melanchall.DryWetMidi.Interaction;
 
 namespace app
 {
+    /// <summary>
+    /// Interaction logic for MainWindow.xaml. This class handles the main window of the application,
+    /// including the initialization, event handling and UI updates.
+    /// </summary>
     public partial class MainWindow : Window
     {
         private UIElement selected;
@@ -32,6 +36,9 @@ namespace app
         
         private int sectionCount = 0;
 
+        /// <summary>
+        /// Initializes components and sets up event handlers.
+        /// </summary>
         public MainWindow()
         {
             InitializeComponent();
@@ -103,6 +110,9 @@ namespace app
             }
         }
 
+        /// <summary>
+        /// Loading the song from the archive and processing the metadata, MIDI files and images.
+        /// </summary>
         private void ProcessArchive(string directoryPath)
         {
             try
@@ -138,7 +148,7 @@ namespace app
 
                         sectionsMidiPath.Add(Path.Combine(directoryPath, scoreMidiPath));
 
-                        AddRowToMainPanel(Path.GetFileName(directory), bitmap);
+                        AddRowToMainPanel(bitmap);
                         sectionCount++;
                     }
                 }
@@ -149,7 +159,7 @@ namespace app
             }
         }
 
-        private void AddRowToMainPanel(string directoryName, BitmapImage image)
+        private void AddRowToMainPanel(BitmapImage image)
         {
             var grid = new Grid
             {
@@ -267,6 +277,9 @@ namespace app
             MidiPlayer.PlayMidiFile(sectionsMidiPath[Convert.ToInt32((sender as Button).Tag)]);
         }
 
+        /// <summary>
+        /// Triggers the compilation of the music blocks into a MIDI file and plays it.
+        /// </summary>
         private void CodeBlockPlay_Click(object sender, RoutedEventArgs e)
         {
             var section = Convert.ToInt32((sender as Button).Tag);
@@ -283,15 +296,15 @@ namespace app
                 {
                     if (musicBlock is NoteBlock noteBlock)
                     {
-                        midiBuilder.AddNote(noteBlock.Notename, noteBlock.MusicalTimeSpan);
+                        midiBuilder.AddNote(noteBlock.NoteName, noteBlock.TimeSpan);
                     }
                     else if (musicBlock is ChordBlock chordBlock)
                     {
-                        midiBuilder.AddChord(chordBlock.notenames, chordBlock.musicalTimeSpan);
+                        midiBuilder.AddChord(chordBlock.NoteNames, chordBlock.TimeSpan);
                     }
                     else if (musicBlock is LoopBlock loopBlock)
                     {
-                        loopBlock.AddLoopblock(midiBuilder);
+                        loopBlock.BuildMidiSequence(midiBuilder);
                     }
                     else
                     {
@@ -312,6 +325,9 @@ namespace app
             }
         }
 
+        /// <summary>
+        /// Ensures that double-clicking on a code block is possible.
+        /// </summary>
         private void CodeBlock_ClickTimer_Tick(object sender, EventArgs e)
         {
             clickTimer.Stop();
@@ -380,6 +396,9 @@ namespace app
             e.Handled = true;
         }
 
+        /// <summary>
+        /// Adds a code block to the stack panel and data structure when it is dropped.
+        /// </summary>
         private void CodeBlocksPlacement_Drop(object sender, DragEventArgs e)
         {
             if (e.Data.GetData(typeof(Border)) is Border codeBlock)
